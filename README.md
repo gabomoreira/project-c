@@ -45,6 +45,6 @@ Turma:
 ```
 
 ## Sobre a entrega
-* Grupos de 3 alunos
-* Data de entrega: 22/12
+* Grupos de 4 alunos
+* Data de entrega: 29/06
 * Forma de entrega: apresentação em sala
