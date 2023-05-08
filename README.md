@@ -14,6 +14,7 @@
     * Imprimir nome dos professores
     * Imprimir matrículas dos professores que não estão em nenhuma turma
     * Calcular nota média de todas as turmas
+* Persistir os dados da aplicaç
 
 ### Restrições
 * O sistema não deve permitir a inserção de dois alunos com matrículas ouo cpf iguais
