@@ -29,11 +29,11 @@ int menu_crud_aluno()
     int opcao = 0;
     do
     {
-        printf("== Menu professor==\n\n");
-        printf("1 - Criar professor\n");
-        printf("2 - Ler professor\n");
-        printf("3 - Atualizar professor\n");
-        printf("4 - Deletar professor\n");
+        printf("== Menu aluno==\n\n");
+        printf("1 - Criar aluno\n");
+        printf("2 - Ler aluno\n");
+        printf("3 - Atualizar aluno\n");
+        printf("4 - Deletar aluno\n");
         printf("5 - Voltar menu anterior\n");
         printf("Opcao > ");
         scanf("%d", &opcao);
