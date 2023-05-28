@@ -309,11 +309,11 @@ Professor *construir_professor()
     Professor professor;
 
     printf("Matricula\t> ");
-    fgets(professor.matricula, 9, stdin);
+    fgets(professor.matricula, 100, stdin);
     printf("CPF\t> ");
-    fgets(professor.cpf, 9, stdin);
+    fgets(professor.cpf, 100, stdin);
     printf("Nome\t> ");
-    fgets(professor.nome, 49, stdin);
+    fgets(professor.nome, 100, stdin);
     
     return criarProfessor(professor.matricula, professor.cpf, professor.nome, construir_endereco());
 }
@@ -323,15 +323,15 @@ Turma *construir_turma()
     Turma turma;
 
     printf("Codigo\t> ");
-    fgets(turma.codigo, 9, stdin);
+    fgets(turma.codigo, 100, stdin);
     printf("Disciplina\t> ");
-    fgets(turma.disciplina, 12, stdin);
+    fgets(turma.disciplina, 100, stdin);
     printf("Professor\t> ");
-    fgets(turma.professor_turma, 49, stdin);
+    fgets(turma.professor_turma, 100, stdin);
     printf("Lista de alunos\t> ");
-    fgets(turma.lista_alunos, 12, stdin);
+    fgets(turma.lista_alunos, 100, stdin);
     printf("Media da turma\t> ");
-    fgets(turma.media_turma, 2, stdin);
+    fgets(turma.media_turma, 100, stdin);
     
     return criarTurma(turma.codigo, turma.disciplina, turma.professor_turma, turma.lista_alunos, turma.media_turma, construir_endereco());
 }
@@ -359,11 +359,11 @@ Aluno *construir_aluno()
     Aluno aluno;
 
     printf("Matricula\t> ");
-    fgets(aluno.matricula, 9, stdin);
+    fgets(aluno.matricula, 100, stdin);
     printf("CPF\t> ");
-    fgets(aluno.cpf, 9, stdin);
+    fgets(aluno.cpf, 100, stdin);
     printf("Nome\t> ");
-    fgets(aluno.nome, 49, stdin);
+    fgets(aluno.nome, 100, stdin);
     
     return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, construir_endereco());
 }
