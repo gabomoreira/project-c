@@ -63,27 +63,27 @@ Endereco *criarEndereco(char *logradouro,
     }
     return endereco;
 }
-Turma *criarTurma(char *codigo, 
-                char *nome_disciplina, 
-                char *professor, 
-                char *lista_alunos, 
-                int media_turma)
-{
-    Turma *turma = (Turma *)malloc(sizeof(Turma));
-    if (turma)
-    {
-        strcpy(turma->codigo, codigo);
-        strcpy(turma->nome_disciplina, nome_disciplina);
-        strcpy(turma->professor, professor);
-        strcpy(turma->lista_alunos, lista_alunos);
-        strcpy(turma->media_turma, media_turma);
-    }
-    else
-    {
-        perror("Não há memória disponível. Encerrando\n\n");
-    }
-    return turma;
-}
+// Turma *criarTurma(char *codigo, 
+//                 char *nome_disciplina, 
+//                 char *professor, 
+//                 char *lista_alunos, 
+//                 int media_turma)
+// {
+//     Turma *turma = (Turma *)malloc(sizeof(Turma));
+//     if (turma)
+//     {
+//         strcpy(turma->codigo, codigo);
+//         strcpy(turma->nome_disciplina, nome_disciplina);
+//         strcpy(turma->professor, professor);
+//         strcpy(turma->lista_alunos, lista_alunos);
+//         strcpy(turma->media_turma, media_turma);
+//     }
+//     else
+//     {
+//         perror("Não há memória disponível. Encerrando\n\n");
+//     }
+//     return turma;
+// }
 
 void destruirAluno(Aluno *aluno)
 {

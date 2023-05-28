@@ -5,7 +5,8 @@
 #include "constantes.h"
 #include <string.h>
 
-void tratador_menu_aluno(Aluno **alunos, int *qtd_atual_aluno)
+// funcionando aparentemente
+void tratador_menu_aluno()
 {
     int opcao = menu_crud_aluno();
     Aluno *aluno = NULL;
@@ -62,6 +63,224 @@ void tratador_menu_aluno(Aluno **alunos, int *qtd_atual_aluno)
         break;
     }
 }
+
+// falta implmentar
+void tratador_menu_professor()
+{
+    int opcao = menu_crud_aluno();
+    // Aluno *aluno = NULL;
+    
+    // int quantidadeAlunos = obterQuantidadeAlunos();
+
+    // if (quantidadeAlunos != -1)
+    // {
+    //     printf("Quantidade de alunos armazenados: %d\n", quantidadeAlunos);
+    // } else {
+    //     printf("Erro no banco");
+    // }
+
+    switch (opcao)
+    {
+    case 1:
+        // funcao para o case 1
+
+        // if (quantidadeAlunos >= MAX_ALUNO)
+        // {
+        //     printf("Número máximo de alunos atingido\n");
+        // }
+        // else
+        // {
+        //     salvarAlunoBinario(construir_aluno());
+        // }
+        // break;
+    case 2:
+    {
+         // funcao para o case 2
+
+        // Aluno *aluno = buscar_aluno();
+        // if (aluno == NULL)
+        // {
+        //     printf("Aluno não encontrado.\n");
+        //     return;
+        // }
+
+        // printf("Dados do Aluno:\n");
+        // imprimir_aluno(aluno);
+
+    }
+    break;
+    case 3:
+    {
+         // funcao para o case 3
+
+        // atualizarAluno(construir_aluno());
+    }
+
+    break;
+    case 4:
+    {
+         // funcao para o case 4
+
+        // remover_aluno();
+    }
+
+    break;
+    default:
+        printf("Retornando ao menu principal\n");
+        break;
+    }
+}
+
+void tratador_menu_turma()
+{
+    int opcao = menu_crud_aluno();
+    // Aluno *aluno = NULL;
+    
+    // int quantidadeAlunos = obterQuantidadeAlunos();
+
+    // if (quantidadeAlunos != -1)
+    // {
+    //     printf("Quantidade de alunos armazenados: %d\n", quantidadeAlunos);
+    // } else {
+    //     printf("Erro no banco");
+    // }
+
+    switch (opcao)
+    {
+    case 1:
+        // funcao para o case 1
+
+        // if (quantidadeAlunos >= MAX_ALUNO)
+        // {
+        //     printf("Número máximo de alunos atingido\n");
+        // }
+        // else
+        // {
+        //     salvarAlunoBinario(construir_aluno());
+        // }
+        // break;
+    case 2:
+    {
+         // funcao para o case 2
+
+        // Aluno *aluno = buscar_aluno();
+        // if (aluno == NULL)
+        // {
+        //     printf("Aluno não encontrado.\n");
+        //     return;
+        // }
+
+        // printf("Dados do Aluno:\n");
+        // imprimir_aluno(aluno);
+
+    }
+    break;
+    case 3:
+    {
+         // funcao para o case 3
+
+        // atualizarAluno(construir_aluno());
+    }
+
+    break;
+    case 4:
+    {
+         // funcao para o case 4
+
+        // remover_aluno();
+    }
+
+    break;
+    default:
+        printf("Retornando ao menu principal\n");
+        break;
+    }
+}
+
+void tratador_menu_estatistica()
+{
+    int opcao = menu_crud_aluno();
+    // Aluno *aluno = NULL;
+    
+    // int quantidadeAlunos = obterQuantidadeAlunos();
+
+    // if (quantidadeAlunos != -1)
+    // {
+    //     printf("Quantidade de alunos armazenados: %d\n", quantidadeAlunos);
+    // } else {
+    //     printf("Erro no banco");
+    // }
+
+    switch (opcao)
+    {
+    case 1:
+        // funcao para o case 1
+
+        // if (quantidadeAlunos >= MAX_ALUNO)
+        // {
+        //     printf("Número máximo de alunos atingido\n");
+        // }
+        // else
+        // {
+        //     salvarAlunoBinario(construir_aluno());
+        // }
+        // break;
+    case 2:
+    {
+         // funcao para o case 2
+
+        // Aluno *aluno = buscar_aluno();
+        // if (aluno == NULL)
+        // {
+        //     printf("Aluno não encontrado.\n");
+        //     return;
+        // }
+
+        // printf("Dados do Aluno:\n");
+        // imprimir_aluno(aluno);
+
+    }
+    break;
+    case 3:
+    {
+         // funcao para o case 3
+
+        // atualizarAluno(construir_aluno());
+    }
+
+    break;
+    case 4:
+    {
+         // funcao para o case 4
+
+        // remover_aluno();
+    }
+
+    break;
+    default:
+        printf("Retornando ao menu principal\n");
+        break;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Endereco *construir_endereco()
 {

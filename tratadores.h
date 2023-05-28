@@ -2,7 +2,16 @@
 #define _TRATADORES_H_
 
 #include "dados.h"
-void tratador_menu_aluno(Aluno **alunos, int *qtd_atual_aluno);
+
+/*
+ tratadores
+*/
+
+void tratador_menu_aluno();
+void tratador_menu_turma();
+void tratador_menu_professor();
+void tratador_menu_estatistica();
+
 Endereco *construir_endereco();
 
 Aluno *construir_aluno();
