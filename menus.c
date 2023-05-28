@@ -10,7 +10,7 @@ int menu_principal()
         printf("1 - Menu aluno\n"); // foram adicionados menus de professor, turma e Estatística
         printf("2 - Menu professor\n");
         printf("3 - Menu turma\n");                
-        printf("4 - Estatística\n");
+        printf("4 - Estatistica\n");
         printf("5 - Sair\n");        //falta alterar saída para opcao 5 e os cases
         printf("Opcao > ");
         scanf("%d", &opcao);

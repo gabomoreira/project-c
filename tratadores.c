@@ -277,7 +277,7 @@ void salvar_turma_service() {
 
 Turma *buscar_turma_service() {
     char codigo[50];
-    printf("Código: > ");
+    printf("Codigo: > ");
     fgets(codigo, 50, stdin);
     putchar('\n');
 
@@ -292,7 +292,7 @@ void atualizar_turma_service(Turma *turma)
 void remover_turma_service() {
 
     char codigo[50];
-    printf("Código > ");
+    printf("Codigo > ");
     fgets(codigo, 50, stdin);
     putchar('\n');
 
@@ -322,7 +322,7 @@ Turma *construir_turma()
 {
     Turma turma;
 
-    printf("Código\t> ");
+    printf("Codigo\t> ");
     fgets(turma.codigo, 9, stdin);
     printf("Disciplina\t> ");
     fgets(turma.disciplina, 12, stdin);
@@ -330,7 +330,7 @@ Turma *construir_turma()
     fgets(turma.professor_turma, 49, stdin);
     printf("Lista de alunos\t> ");
     fgets(turma.lista_alunos, 12, stdin);
-    printf("Média da turma\t> ");
+    printf("Media da turma\t> ");
     fgets(turma.media_turma, 2, stdin);
     
     return criarTurma(turma.codigo, turma.disciplina, turma.professor_turma, turma.lista_alunos, turma.media_turma, construir_endereco());
@@ -431,11 +431,11 @@ void imprimir_professor(Professor *professor)
 
 void imprimir_turma(Turma *turma)
 {
-    printf("Código: %s", turma->codigo);
-    printf("Disciplina: %s", turma->disciplina);
-    printf("Professor: %s", turma->professor_turma);
-    printf("Lista de alunos: %s", turma->lista_alunos);
-    printf("Média da turma: %s", turma->media_turma);
+    printf("Codigo: %s\n", turma->codigo);
+    printf("Disciplina: %s\n", turma->disciplina);
+    printf("Professor: %s\n", turma->professor_turma);
+    printf("Lista de alunos: %s\n", turma->lista_alunos);
+    printf("Media da turma: %s\n", turma->media_turma);
 }
 
 
