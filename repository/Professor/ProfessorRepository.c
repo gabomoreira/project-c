@@ -40,17 +40,42 @@ int obterQuantidadeProfessoresRepository()
 // Função para adicionar um professor a um arquivo binário existente
 void salvarProfessorRepository(Professor *professor)
 {
-    FILE *arquivo = fopen(RELATIVE_PATH_DB, "ab");
-    if (arquivo)
+     FILE *arquivo = fopen(RELATIVE_PATH_DB, "ab+");
+
+    if (arquivo == NULL)
     {
-        fwrite(professor, sizeof(Professor), 1, arquivo);
-        fclose(arquivo);
-        printf("Professor adicionado com sucesso!\n");
+        printf("Erro ao abrir o arquivo.\n");
+        return;
     }
-    else
+
+    rewind(arquivo);
+    Professor professorExistente;
+    while (fread(&professorExistente, sizeof(Professor), 1, arquivo) == 1)
     {
-        perror("Erro ao abrir o arquivo.\n");
+        if (strcmp(professorExistente.matricula, professor->matricula) == 0)
+        {
+            printf("Ja existe um professor com essa matricula.\n");
+            fclose(arquivo);
+            return;
+        }
     }
+
+    rewind(arquivo);
+    while (fread(&professorExistente, sizeof(Professor), 1, arquivo) == 1)
+    {
+        if (strcmp(professorExistente.cpf, professor->cpf) == 0)
+        {
+            printf("Ja existe um professor com esse CPF.\n");
+            fclose(arquivo);
+            return;
+        }
+    }
+
+    fwrite(professor, sizeof(Professor), 1, arquivo);
+
+    printf("Professor cadastrado com sucesso!\n");
+
+    fclose(arquivo);
 }
 
 // Função para resgatar um professor de um arquivo binário a partir da matrícula
