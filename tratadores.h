@@ -10,7 +10,9 @@ Aluno *construir_aluno();
 /*
     Busca um aluno
 */
-Aluno *buscar_aluno(Aluno **alunos, int *posicao);
+Aluno *buscar_aluno();
+
+void remover_aluno();
 
 void imprimir_aluno(Aluno *aluno);
 

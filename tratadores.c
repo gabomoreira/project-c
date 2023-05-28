@@ -1,4 +1,5 @@
 #include "tratadores.h"
+#include "./repository/Aluno/AlunoRepository.h"
 #include "menus.h"
 #include <stdio.h>
 #include "constantes.h"
@@ -8,92 +9,51 @@ void tratador_menu_aluno(Aluno **alunos, int *qtd_atual_aluno)
 {
     int opcao = menu_crud_aluno();
     Aluno *aluno = NULL;
+    
+    int quantidadeAlunos = obterQuantidadeAlunos();
+
+    if (quantidadeAlunos != -1)
+    {
+        printf("Quantidade de alunos armazenados: %d\n", quantidadeAlunos);
+    } else {
+        printf("Erro no banco");
+    }
+
     switch (opcao)
     {
     case 1:
-        if (*qtd_atual_aluno >= MAX_ALUNO)
+        if (quantidadeAlunos >= MAX_ALUNO)
         {
             printf("Número máximo de alunos atingido\n");
         }
         else
         {
-            // Passo 1: buscar posicao disponível
-            int i = 0;
-            for (; i < *qtd_atual_aluno; i++)
-            {
-                if (alunos[i] != NULL)
-                {
-                    // significa que esta posição está livre para uso
-                    break;
-                }
-            }
-            Aluno *aluno = construir_aluno();
-            alunos[i] = aluno;
-            *qtd_atual_aluno++;
+            salvarAlunoBinario(construir_aluno());
         }
         break;
     case 2:
     {
-        int posicao = 0;
-        aluno = buscar_aluno(alunos, &posicao);
-        if (aluno)
+        Aluno *aluno = buscar_aluno();
+        if (aluno == NULL)
         {
-            imprimir_aluno(aluno);
+            printf("Aluno não encontrado.\n");
+            return;
         }
-        else
-        {
-            printf("Aluno não encontrado!!\n");
-        }
+
+        printf("Dados do Aluno:\n");
+        imprimir_aluno(aluno);
+
     }
     break;
     case 3:
-    {// Implementação da atualização de aluno
-    
-    // definição da variável encontrado
-    int encontrado = 0;
-
-    // Verificando se o aluno já existe no array
-    for (int i = 0; i < MAX_ALUNO; i++) {
-        if (aluno->nome[i] == elemento) {
-            encontrado = 1;
-            break;
-        }
-    }
-
-    // Atualizando o elemento se ele não existir no array
-    if (!encontrado) {
-        for (int i = 0; i < TAMANHO_MAX; i++) {
-            if (numeros[i] == elemento) {
-                numeros[i] = novoValor;
-                break;
-            }
-        }
-        printf("Elemento atualizado com sucesso!\n");
-    } else {
-        printf("Elemento não encontrado no array. Nada a ser atualizado.\n");
-    }
-
-    
-
-
-
+    {
+        atualizarAluno(construir_aluno());
     }
 
     break;
     case 4:
     {
-        int posicao = 0;
-        aluno = buscar_aluno(alunos, &posicao);
-        if (aluno)
-        {
-            destruirAluno(aluno);
-            alunos[posicao] = NULL;
-            printf("Aluno destruido\n");
-        }
-        else
-        {
-            printf("Aluno não encontrado!!\n");
-        }
+        remover_aluno();
     }
 
     break;
@@ -115,7 +75,7 @@ Endereco *construir_endereco()
     fgets(endereco.cidade, 49, stdin);
     printf("Estado\t> ");
     fgets(endereco.estado, 9, stdin);
-    printf("Número\t> ");
+    printf("Numero\t> ");
     fgets(endereco.numero, 9, stdin);
 
     return criarEndereco(endereco.logradouro, endereco.bairro, endereco.cidade, endereco.estado, endereco.numero);
@@ -124,95 +84,63 @@ Endereco *construir_endereco()
 Aluno *construir_aluno()
 {
     Aluno aluno;
-    printf("Matrícula\t> ");
+
+    printf("Matricula\t> ");
     fgets(aluno.matricula, 9, stdin);
     printf("CPF\t> ");
     fgets(aluno.cpf, 9, stdin);
     printf("Nome\t> ");
     fgets(aluno.nome, 49, stdin);
-    aluno.endereco = construir_endereco();
-    return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, aluno.endereco);
+    
+    return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, construir_endereco());
 }
 
-Aluno *buscar_aluno(Aluno **alunos, int *posicao)
+Aluno *buscar_aluno()
 {
     char matricula[50];
-    printf("Matrícula > ");
+    printf("Matricula > ");
     fgets(matricula, 49, stdin);
-    Aluno *resultado = NULL;
-    int pos_resultado = -1;
-    for (int i = 0; i < MAX_ALUNO; i++)
-    {
-        // Vamos testar se o aluno existe e se a matricula e a buscada
-        // strcmp compara strings. Se for 0 indica que são iguais
-        if (alunos[i] && !strcmp(matricula, alunos[i]->matricula))
-        {
-            resultado = alunos[i];
-            break;
-        }
-    }
-    *posicao = pos_resultado;
-    return resultado;
+    putchar('\n');
+
+    return resgatarAluno(matricula);
+}
+
+void atualizar_aluno(Aluno *aluno)
+{
+    char matricula[50];
+    printf("Matricula > ");
+    fgets(matricula, 49, stdin);
+    putchar('\n');
+
+    return atualizarAluno(aluno);
+}
+
+void remover_aluno()
+{
+    char matricula[50];
+    printf("Matricula > ");
+    fgets(matricula, 49, stdin);
+    putchar('\n');
+
+    return excluirAluno(matricula);
 }
 
 // PARTE DE OUTPUT DO PROMPT OKAY
 
 void imprimir_aluno(Aluno *aluno)
 {
-    printf("Matrícula: %s", aluno->matricula);
-    printf("Nome: %s", aluno->nome);
-    printf("CPF: %s", aluno->cpf);
-    imprimir_endereco(aluno->endereco);
+    printf("Matricula: %s", aluno->matricula);
+    printf("CPF: %s\n", aluno->cpf);
+    printf("Nome: %s\n", aluno->nome);
+    printf("Endereco: %s, %s, %s, %s, %s\n",
+           aluno->endereco->logradouro,
+           aluno->endereco->bairro,
+           aluno->endereco->cidade,
+           aluno->endereco->estado,
+           aluno->endereco->numero);
 }
 
 void imprimir_endereco(Endereco *endereco)
 {
-    printf("Logradouro: %s", endereco->logradouro);
-    printf("Número: %s", endereco->numero);
-    printf("Bairro: %s", endereco->bairro);
-    printf("Cidade: %s", endereco->cidade);
-    printf("Estado: %s", endereco->estado);
-}
-
-// FUNÇÕES ADICIONADAS PARA CRIAÇÃO DOS MENUS PARA PROFESSOR
-/*Professor:
-  * matricula
-  * nome
-  * cpf
-  * endereco*/
-
-void imprimir_aluno(Professor *professor)
-{
-    printf("Matrícula: %s", professor->matricula);
-    printf("Nome: %s", professor->nome);
-    printf("CPF: %s", professor->cpf);
-    imprimir_endereco(professor->endereco);
-}
-// não sei se precisa colocar esse Endereço de novo mas vou deixar por enquanto
-void imprimir_endereco(Endereco *endereco)
-{
-    printf("Logradouro: %s", endereco->logradouro);
-    printf("Número: %s", endereco->numero);
-    printf("Bairro: %s", endereco->bairro);
-    printf("Cidade: %s", endereco->cidade);
-    printf("Estado: %s", endereco->estado);
-}
-
-// FUNÇÕES ADICIONADAS PARA CRIAÇÃO DOS MENUS PARA TURMA
-
-/*Turma:
-  * codigo
-  * nome_disciplina
-  * professor
-  * lista_alunos
-  * media_turma
- */
-
-void imprimir_aluno(Turma *turma)
-{
-    printf("Código: %s", turma->codigo);
-    printf("Disciplina: %s", turma->nome_disciplina);
-    printf("Professor: %s", turma->professor);
-    printf("Lista de alunos: %s", turma->lista_alunos);
-    printf("Média: %s", turma->media_turma);    
+    
 }
