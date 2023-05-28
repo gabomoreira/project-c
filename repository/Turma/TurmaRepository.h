@@ -15,4 +15,6 @@ void atualizarTurmaRepository(Turma *turma);
 // Função para remover uma turma em um arquivo binário
 void excluirTurmaRepository(char *codigo);
 
+//função para imprimir a relação de professores sem turma
 
+void listarProfessoresSemTurma();

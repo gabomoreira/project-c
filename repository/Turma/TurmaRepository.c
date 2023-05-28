@@ -8,6 +8,9 @@
 // Declaração de uma constante para o caminho do db de turma
 static const char* RELATIVE_PATH_DB = "db/turma.bin";
 
+// Declaração de uma constante para o caminho do db de turma
+static const char* RELATIVE_PATH_DB2 = "db/turma.bin";
+
 // Função para obter a quantidade de turmas armazenados em um arquivo binário
 int obterQuantidadeTurmasRepository()
 {
@@ -188,4 +191,60 @@ void excluirTurmaRepository(char *codigo) {
     } else {
         printf("Turma não encontrada!!\n");
     }
+}
+
+void listarProfessoresSemTurma()
+ {
+    // Abre o arquivo binário dos professores em modo de leitura binária
+      FILE* fpProfessores = fopen(RELATIVE_PATH_DB2, "rb");
+    if (fpProfessores == NULL) {
+        perror("Erro ao abrir o arquivo de professores");
+        return 1;
+    }
+
+    // Abre o arquivo binário das turmas em modo de leitura binária
+      // Abre o arquivo binário dos professores em modo de leitura binária
+    FILE* fpProfessores = fopen(RELATIVE_PATH_DB, "rb");
+    if (fpProfessores == NULL) {
+        perror("Erro ao abrir o arquivo de professores");
+        return 1;
+    }
+
+    // Abre o arquivo binário das turmas em modo de leitura binária
+    FILE* fpTurmas = fopen(RELATIVE_PATH_DB, "rb");
+    if (fpTurmas == NULL) {
+        perror("Erro ao abrir o arquivo de turmas");
+        return 1;
+    }
+
+    Professor professor;
+    Turma turma;
+    int professorEncontrado;
+
+    // Lê todos os professores do arquivo de professores
+    while (fread(&professor, sizeof(Professor), 1, fpProfessores) == 1) {
+        professorEncontrado = 0;
+
+        // Volta ao início do arquivo de turmas para a próxima iteração
+        rewind(fpTurmas);
+
+        // Compara o nome do professor com os nomes das turmas existentes
+        while (fread(&turma, sizeof(Turma), 1, fpTurmas) == 1) {
+            if (strcmp(professor.nome, turma.professor_turma) == 0) {
+                professorEncontrado = 1;
+                break;
+            }
+        }
+
+        // Se o professor não foi encontrado nas turmas, imprime a matrícula
+        if (!professorEncontrado) {
+            printf("Matrícula do professor: %s\n", professor.matricula);
+        }
+    }
+
+    // Fecha os arquivos
+    fclose(fpProfessores);
+    fclose(fpTurmas);
+
+    return 0;
 }

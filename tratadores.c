@@ -197,20 +197,14 @@ void tratador_menu_estatistica()
     switch (opcao)
     {
     case 1:
+    {
         listarNomesProfessores();
+    }
+    break;
+
     case 2:
     {
-         // funcao para o case 2
-
-        // Aluno *aluno = buscar_aluno();
-        // if (aluno == NULL)
-        // {
-        //     printf("Aluno não encontrado.\n");
-        //     return;
-        // }
-
-        // printf("Dados do Aluno:\n");
-        // imprimir_aluno(aluno);
+        listarProfessoresSemTurma();
 
     }
     break;
