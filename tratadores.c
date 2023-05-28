@@ -307,6 +307,24 @@ Professor *construir_professor()
     return criarProfessor(professor.matricula, professor.cpf, professor.nome, construir_endereco());
 }
 
+Turma *construir_turma()
+{
+    Turma turma;
+
+    printf("Código\t> ");
+    fgets(turma.codigo, 9, stdin);
+    printf("Disciplina\t> ");
+    fgets(turma.disciplina, 12, stdin);
+    printf("Professor\t> ");
+    fgets(turma.professor_turma, 49, stdin);
+    printf("Lista de alunos\t> ");
+    fgets(turma.lista_alunos, 12, stdin);
+    printf("Média da turma\t> ");
+    fgets(turma.media_turma, 49, stdin);
+    
+    return criarTurma(turma.codigo, turma.disciplina, turma.professor_turma, turma.lista_alunos, turma.media_turma, construir_endereco());
+}
+
 Endereco *construir_endereco()
 {
     Endereco endereco;
@@ -398,6 +416,15 @@ void imprimir_professor(Professor *professor)
            professor->endereco->cidade,
            professor->endereco->estado,
            professor->endereco->numero);
+}
+
+void imprimir_turma(Turma *turma)
+{
+    printf("Código: %s", turma->codigo);
+    printf("Disciplina: %s", turma->disciplina);
+    printf("Professor: %s", turma->professor_turma);
+    printf("Lista de alunos: %s", turma->lista_alunos);
+    printf("Média da turma: %d", turma->media_turma);
 }
 
 
