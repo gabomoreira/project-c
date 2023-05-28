@@ -15,4 +15,8 @@ void atualizarProfessorRepository(Professor *professor);
 // Função para remover um orifessor em um arquivo binário
 void excluirProfessorRepository(char *matricula);
 
+//função para listar os nomes dos professores
+void listarNomesProfessores();
+
+
 

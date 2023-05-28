@@ -31,7 +31,7 @@ typedef struct
     char codigo[10];
     char disciplina[12];
     char lista_alunos[50];
-    int media_turma;
+    char media_turma[2];
     char professor_turma[50];
     Endereco *endereco;
 } Turma;
@@ -56,7 +56,7 @@ Turma *criarTurma(char *codigo,
                   char *disciplina,
                   char *professor_turma,
                   char *lista_alunos,
-                  int *media_turma,
+                  char *media_turma,
                   Endereco *end);
 
 void destruirAluno(Aluno *aluno);

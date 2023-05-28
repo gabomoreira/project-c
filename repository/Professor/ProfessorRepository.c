@@ -192,3 +192,41 @@ void excluirProfessorRepository(char *matricula) {
         printf("Professor não encontrado!!\n");
     }
 }
+void listarNomesProfessores()
+ {
+    
+    // Abrir o arquivo binário para leitura
+    FILE* fp = fopen(RELATIVE_PATH_DB, "rb");
+    if (fp == NULL) {
+        perror("Erro ao abrir o arquivo");
+        return;
+    }
+
+    // Calcular o tamanho do arquivo
+    fseek(fp, 0, SEEK_END);
+    long tamanhoArquivo = ftell(fp);
+    rewind(fp);
+
+    // Calcular o número de registros de professores
+    int numProfessores = tamanhoArquivo / sizeof(Professor);
+    if (numProfessores)
+    {
+        Professor professor;
+    for (int i = 0; i < numProfessores; i++) {
+        fread(&professor, sizeof(Professor), 1, fp);
+        printf("%d. %s\n", i + 1, professor.nome);
+    }
+
+    } 
+    else {
+        printf("não há registros de professores ");
+    }
+
+
+    // Ler e listar os nomes dos professores
+    
+
+    // Fechar o arquivo
+    fclose(fp);
+}
+
