@@ -1,4 +1,4 @@
-#include "./AlunoRepository.h"
+#include "./ProfessorRepository.h"
 #include "../../dados.h"
 #include "../../constantes.h"
 #include <stdlib.h>
@@ -6,16 +6,16 @@
 #include <string.h>
 
 // Declaração de uma constante para o caminho do db de aluno
-static const char* RELATIVE_PATH_DB = "db/aluno.bin";
+static const char* RELATIVE_PATH_DB = "db/professor.bin";
 
-// Função para obter a quantidade de alunos armazenados em um arquivo binário
-int obterQuantidadeAlunos()
+// Função para obter a quantidade de professores armazenados em um arquivo binário
+int obterQuantidadeProfessoresRepository()
 {
     FILE *arquivo = fopen(RELATIVE_PATH_DB, "rb");
     if (arquivo)
     {
         // Definir o tamanho do registro do aluno no arquivo binário
-        long tamanhoRegistro = sizeof(Aluno);
+        long tamanhoRegistro = sizeof(Professor);
 
         // Mover o cursor do arquivo para o final
         fseek(arquivo, 0, SEEK_END);
@@ -24,11 +24,11 @@ int obterQuantidadeAlunos()
         long tamanhoArquivo = ftell(arquivo);
 
         // Calcular a quantidade de registros de alunos
-        int quantidadeAlunos = tamanhoArquivo / tamanhoRegistro;
+        int quantidadeProfessores = tamanhoArquivo / tamanhoRegistro;
 
         fclose(arquivo);
 
-        return quantidadeAlunos;
+        return quantidadeProfessores;
     }
     else
     {
@@ -37,15 +37,15 @@ int obterQuantidadeAlunos()
     }
 }
 
-// Função para adicionar um aluno a um arquivo binário existente
-void salvarAlunoBinario(Aluno *aluno)
+// Função para adicionar um professor a um arquivo binário existente
+void salvarProfessorRepository(Professor *professor)
 {
     FILE *arquivo = fopen(RELATIVE_PATH_DB, "ab");
     if (arquivo)
     {
-        fwrite(aluno, sizeof(Aluno), 1, arquivo);
+        fwrite(professor, sizeof(Professor), 1, arquivo);
         fclose(arquivo);
-        printf("Aluno adicionado com sucesso!\n");
+        printf("Professor adicionado com sucesso!\n");
     }
     else
     {
@@ -53,8 +53,8 @@ void salvarAlunoBinario(Aluno *aluno)
     }
 }
 
-// Função para resgatar um aluno de um arquivo binário a partir da matrícula
-Aluno *resgatarAluno(char *matricula)
+// Função para resgatar um professor de um arquivo binário a partir da matrícula
+Professor *resgatarProfessorRepository(char *matricula)
 {
     FILE *arquivo = fopen(RELATIVE_PATH_DB, "rb"); // Nome do arquivo binário dos alunos
     if (!arquivo)
@@ -63,29 +63,29 @@ Aluno *resgatarAluno(char *matricula)
         return NULL;
     }
     
-    Aluno *aluno = NULL;
+    Professor *professor = NULL;
     while (1)
     {
-        aluno = (Aluno *)malloc(sizeof(Aluno));
-        if (!aluno)
+        professor = (Professor *)malloc(sizeof(Professor));
+        if (!professor)
         {
             perror("Não há memória disponível. Encerrando\n\n");
             return NULL;
         }
         
-        if (fread(aluno, sizeof(Aluno), 1, arquivo) != 1)
+        if (fread(professor, sizeof(Professor), 1, arquivo) != 1)
         {
-            free(aluno);
-            break; // Finaliza o loop quando não houver mais alunos para ler
+            free(professor);
+            break; // Finaliza o loop quando não houver mais professor para ler
         }
         
-        if (strcmp(aluno->matricula, matricula) == 0)
+        if (strcmp(professor->matricula, matricula) == 0)
         {
             fclose(arquivo);
-            return aluno; // Retorna o aluno encontrado
+            return professor; // Retorna o professor encontrado
         }
         
-        free(aluno); // Libera a memória alocada para o aluno atual
+        free(professor); // Libera a memória alocada para o aluno atual
     }
     
     fclose(arquivo);
@@ -93,11 +93,11 @@ Aluno *resgatarAluno(char *matricula)
 }
 
 
-// Função para atualizar um aluno de um arquivo binário
-void atualizarAluno(Aluno *aluno) {
+// Função para atualizar um professor de um arquivo binário
+void atualizarProfessorRepository(Professor *professor) {
     FILE *arquivo;
     FILE *temporario;
-    Aluno alunoAtualizado;
+    Professor professorAtualizado;
 
     // Abre o arquivo binário para leitura
     arquivo = fopen(RELATIVE_PATH_DB, "rb");
@@ -115,20 +115,20 @@ void atualizarAluno(Aluno *aluno) {
     }
 
     // Lê cada registro do arquivo, atualiza os dados do aluno se encontrar a matrícula correspondente
-    while (fread(&alunoAtualizado, sizeof(Aluno), 1, arquivo) == 1) {
-        if (strcmp(alunoAtualizado.matricula, aluno->matricula) == 0) {
+    while (fread(&professorAtualizado, sizeof(Professor), 1, arquivo) == 1) {
+        if (strcmp(professorAtualizado.matricula, professor->matricula) == 0) {
             // Atualiza os dados do aluno
-            strcpy(alunoAtualizado.nome, aluno->nome);
-            strcpy(alunoAtualizado.cpf, aluno->cpf);
+            strcpy(professorAtualizado.nome, professor->nome);
+            strcpy(professorAtualizado.cpf, professor->cpf);
             // Atualiza o endereço
-            strcpy(alunoAtualizado.endereco->logradouro, aluno->endereco->logradouro);
-            strcpy(alunoAtualizado.endereco->bairro, aluno->endereco->bairro);
-            strcpy(alunoAtualizado.endereco->cidade, aluno->endereco->cidade);
-            strcpy(alunoAtualizado.endereco->estado, aluno->endereco->estado);
-            strcpy(alunoAtualizado.endereco->numero, aluno->endereco->numero);
+            strcpy(professorAtualizado.endereco->logradouro, professor->endereco->logradouro);
+            strcpy(professorAtualizado.endereco->bairro, professor->endereco->bairro);
+            strcpy(professorAtualizado.endereco->cidade, professor->endereco->cidade);
+            strcpy(professorAtualizado.endereco->estado, professor->endereco->estado);
+            strcpy(professorAtualizado.endereco->numero, professor->endereco->numero);
         }
         // Escreve o registro atualizado no arquivo temporário
-        fwrite(&alunoAtualizado, sizeof(Aluno), 1, temporario);
+        fwrite(&professorAtualizado, sizeof(Professor), 1, temporario);
     }
 
     // Fecha os arquivos
@@ -141,14 +141,14 @@ void atualizarAluno(Aluno *aluno) {
     // Renomeia o arquivo temporário para o nome original
     rename("temp.bin", RELATIVE_PATH_DB);
 
-    printf("Dados do aluno atualizados com sucesso!\n");
+    printf("Dados do professor atualizados com sucesso!\n");
 }
 
-// Função para remover um aluno de um arquivo binário
-void excluirAluno(char *matricula) {
+// Função para remover um professor de um arquivo binário
+void excluirProfessorRepository(char *matricula) {
     FILE *arquivo;
     FILE *temporario;
-    Aluno aluno;
+    Professor professor;
     int encontrado = 0;
 
     // Abre o arquivo binário para leitura
@@ -167,10 +167,10 @@ void excluirAluno(char *matricula) {
     }
 
     // Lê cada registro do arquivo, excluindo o aluno com a matrícula correspondente
-    while (fread(&aluno, sizeof(Aluno), 1, arquivo) == 1) {
-        if (strcmp(aluno.matricula, matricula) != 0) {
-            // Escreve o registro no arquivo temporário, exceto se for o aluno a ser excluído
-            fwrite(&aluno, sizeof(Aluno), 1, temporario);
+    while (fread(&professor, sizeof(Professor), 1, arquivo) == 1) {
+        if (strcmp(professor.matricula, matricula) != 0) {
+            // Escreve o registro no arquivo temporário, exceto se for o professor a ser excluído
+            fwrite(&professor, sizeof(Professor), 1, temporario);
         } else {
             encontrado = 1;
         }
@@ -187,8 +187,8 @@ void excluirAluno(char *matricula) {
     rename("temp.bin", RELATIVE_PATH_DB);
 
     if (encontrado) {
-        printf("Aluno excluído com sucesso!\n");
+        printf("Professor excluído com sucesso!\n");
     } else {
-        printf("Aluno não encontrado!!\n");
+        printf("Professor não encontrado!!\n");
     }
 }

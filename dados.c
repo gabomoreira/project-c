@@ -33,7 +33,7 @@ Professor *criarProfessor(char *matricula,
         strcpy(professor->matricula, matricula);
         strcpy(professor->cpf, cpf);
         strcpy(professor->nome, nome);
-        //professor->endereco = end;
+        professor->endereco = end;
 }
     else
     {

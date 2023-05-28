@@ -1,13 +1,6 @@
-A cada novo arquivo criado rode esse novo arquivo na mesma pegada que esta mostrado abaixo.
-
-Rode os seguintes comandos para rodar o código:
+Rode o seguinte comando para rodar o código:
 
 
-gcc -c dados.c -o ./output/dados.o 
-gcc -c main.c -o ./output/main.o
-gcc -c menus.c -o ./output/menus.o
-gcc -c tratadores.c -o ./output/tratadores.o
+gcc dados.c main.c menus.c tratadores.c ./repository/Aluno/AlunoRepository.c ./repository/Professor/ProfessorRepository.c -o c 
 
-gcc ./output/dados.o ./output/main.o ./output/menus.o ./output/tratadores.o -o c
-
-c
+./c

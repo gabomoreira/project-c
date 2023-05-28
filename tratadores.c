@@ -1,5 +1,6 @@
 #include "tratadores.h"
 #include "./repository/Aluno/AlunoRepository.h"
+#include "./repository/Professor/ProfessorRepository.h"
 #include "menus.h"
 #include <stdio.h>
 #include "constantes.h"
@@ -64,64 +65,55 @@ void tratador_menu_aluno()
     }
 }
 
-// falta implmentar
+// ja implementado
 void tratador_menu_professor()
 {
-    int opcao = menu_crud_aluno();
-    // Aluno *aluno = NULL;
+    int opcao = menu_crud_professor();
+    Professor *professor = NULL;
     
-    // int quantidadeAlunos = obterQuantidadeAlunos();
+    int quantidadeProfessores = obterQuantidadeProfessoresRepository();
 
-    // if (quantidadeAlunos != -1)
-    // {
-    //     printf("Quantidade de alunos armazenados: %d\n", quantidadeAlunos);
-    // } else {
-    //     printf("Erro no banco");
-    // }
+    if (quantidadeProfessores != -1)
+    {
+        printf("Quantidade de professores armazenados: %d\n", quantidadeProfessores);
+    } else {
+        printf("Erro no banco");
+    }
 
     switch (opcao)
     {
     case 1:
-        // funcao para o case 1
-
-        // if (quantidadeAlunos >= MAX_ALUNO)
-        // {
-        //     printf("Número máximo de alunos atingido\n");
-        // }
-        // else
-        // {
-        //     salvarAlunoBinario(construir_aluno());
-        // }
-        // break;
+        if (quantidadeProfessores >= MAX_PROFESSOR)
+        {
+            printf("Número máximo de professores atingido\n");
+        }
+        else
+        {
+            salvar_professor_service();
+        }
+        break;
     case 2:
-    {
-         // funcao para o case 2
+    {   
+        Professor *professor = buscar_professor_service();
+        if (professor == NULL)
+        {
+            printf("Professor não encontrado.\n");
+            return;
+        }
 
-        // Aluno *aluno = buscar_aluno();
-        // if (aluno == NULL)
-        // {
-        //     printf("Aluno não encontrado.\n");
-        //     return;
-        // }
-
-        // printf("Dados do Aluno:\n");
-        // imprimir_aluno(aluno);
-
+        printf("Dados do Professor:\n");
+        imprimir_professor(professor);
     }
     break;
     case 3:
     {
-         // funcao para o case 3
-
-        // atualizarAluno(construir_aluno());
+        atualizar_professor_service(construir_professor());
     }
 
     break;
     case 4:
     {
-         // funcao para o case 4
-
-        // remover_aluno();
+        remover_professor_service();
     }
 
     break;
@@ -264,23 +256,56 @@ void tratador_menu_estatistica()
 }
 
 
+// professor services
+
+void salvar_professor_service() {
+
+    return salvarProfessorRepository(construir_professor());
+}
+
+Professor *buscar_professor_service() {
+    char matricula[50];
+    printf("Matricula > ");
+    fgets(matricula, 49, stdin);
+    putchar('\n');
+
+    return resgatarProfessorRepository(matricula);
+}
+
+void atualizar_professor_service(Professor *professor)
+{
+    return atualizarProfessorRepository(professor);
+}
+
+void remover_professor_service() {
+
+    char matricula[50];
+    printf("Matricula > ");
+    fgets(matricula, 49, stdin);
+    putchar('\n');
+
+    return excluirProfessorRepository(matricula);
+}
 
 
 
 
 
+// constructors
 
+Professor *construir_professor()
+{
+    Professor professor;
 
-
-
-
-
-
-
-
-
-
-
+    printf("Matricula\t> ");
+    fgets(professor.matricula, 9, stdin);
+    printf("CPF\t> ");
+    fgets(professor.cpf, 9, stdin);
+    printf("Nome\t> ");
+    fgets(professor.nome, 49, stdin);
+    
+    return criarProfessor(professor.matricula, professor.cpf, professor.nome, construir_endereco());
+}
 
 Endereco *construir_endereco()
 {
@@ -344,13 +369,16 @@ void remover_aluno()
     return excluirAluno(matricula);
 }
 
+
+
+
 // PARTE DE OUTPUT DO PROMPT OKAY
 
 void imprimir_aluno(Aluno *aluno)
 {
     printf("Matricula: %s", aluno->matricula);
-    printf("CPF: %s\n", aluno->cpf);
-    printf("Nome: %s\n", aluno->nome);
+    printf("CPF: %s", aluno->cpf);
+    printf("Nome: %s", aluno->nome);
     printf("Endereco: %s, %s, %s, %s, %s\n",
            aluno->endereco->logradouro,
            aluno->endereco->bairro,
@@ -358,6 +386,20 @@ void imprimir_aluno(Aluno *aluno)
            aluno->endereco->estado,
            aluno->endereco->numero);
 }
+
+void imprimir_professor(Professor *professor)
+{
+    printf("Matricula: %s", professor->matricula);
+    printf("CPF: %s", professor->cpf);
+    printf("Nome: %s", professor->nome);
+    printf("Endereco: %s, %s, %s, %s, %s\n",
+           professor->endereco->logradouro,
+           professor->endereco->bairro,
+           professor->endereco->cidade,
+           professor->endereco->estado,
+           professor->endereco->numero);
+}
+
 
 void imprimir_endereco(Endereco *endereco)
 {
