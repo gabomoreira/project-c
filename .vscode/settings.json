@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "menus.h": "c",
+        "constantes.h": "c",
+        "tratadores.h": "c"
+    }
+}

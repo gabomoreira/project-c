@@ -13,6 +13,7 @@ Aluno *construir_aluno();
 Aluno *buscar_aluno(Aluno **alunos, int *posicao);
 
 void imprimir_aluno(Aluno *aluno);
+void imprimir_professor(Professor *professor);
 
 void imprimir_endereco(Endereco *endereco);
 
