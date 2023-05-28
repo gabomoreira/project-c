@@ -54,50 +54,42 @@ void salvarAlunoBinario(Aluno *aluno)
 }
 
 // Função para resgatar um aluno de um arquivo binário a partir da matrícula
-Aluno *resgatarAluno(char *matricula) {
-    FILE *arquivo;
-    Aluno *aluno;
-    int encontrado = 0;
-
-    // Abre o arquivo binário para leitura
-    arquivo = fopen(RELATIVE_PATH_DB, "rb");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+Aluno *resgatarAluno(char *matricula)
+{
+    FILE *arquivo = fopen(RELATIVE_PATH_DB, "rb"); // Nome do arquivo binário dos alunos
+    if (!arquivo)
+    {
+        perror("Erro ao abrir o arquivo\n");
         return NULL;
     }
-
-    // Aloca memória para o ponteiro aluno
-    aluno = (Aluno*) malloc(sizeof(Aluno));
-    if (aluno == NULL) {
-        printf("Erro ao alocar memória para o aluno.\n");
-        fclose(arquivo);
-        return NULL;
-    }
-
-    // Lê cada registro do arquivo, procurando pelo aluno com a matrícula correspondente
-    while (!encontrado && fread(aluno, sizeof(Aluno), 1, arquivo) == 1) {
-        if (strcmp(aluno->matricula, matricula) == 0) {
-            encontrado = 1;
-        }
-    }
-
-    // Fecha o arquivo
-    fclose(arquivo);
-
-    if (encontrado) {
-        // Aloca memória para o ponteiro endereco do aluno
-        aluno->endereco = (Endereco *)malloc(sizeof(Endereco));
-        if (aluno->endereco == NULL) {
-            printf("Erro ao alocar memória para o endereço do aluno.\n");
-            free(aluno);
+    
+    Aluno *aluno = NULL;
+    while (1)
+    {
+        aluno = (Aluno *)malloc(sizeof(Aluno));
+        if (!aluno)
+        {
+            perror("Não há memória disponível. Encerrando\n\n");
             return NULL;
         }
-
-        return aluno;
-    } else {
-        printf("Aluno não encontrado.\n");
-        return NULL;
+        
+        if (fread(aluno, sizeof(Aluno), 1, arquivo) != 1)
+        {
+            free(aluno);
+            break; // Finaliza o loop quando não houver mais alunos para ler
+        }
+        
+        if (strcmp(aluno->matricula, matricula) == 0)
+        {
+            fclose(arquivo);
+            return aluno; // Retorna o aluno encontrado
+        }
+        
+        free(aluno); // Libera a memória alocada para o aluno atual
     }
+    
+    fclose(arquivo);
+    return NULL; // Retorna NULL se o aluno não for encontrado
 }
 
 
@@ -157,6 +149,7 @@ void excluirAluno(char *matricula) {
     FILE *arquivo;
     FILE *temporario;
     Aluno aluno;
+    int encontrado = 0;
 
     // Abre o arquivo binário para leitura
     arquivo = fopen(RELATIVE_PATH_DB, "rb");
@@ -178,6 +171,7 @@ void excluirAluno(char *matricula) {
         if (strcmp(aluno.matricula, matricula) != 0) {
             // Escreve o registro no arquivo temporário, exceto se for o aluno a ser excluído
             fwrite(&aluno, sizeof(Aluno), 1, temporario);
+            encontrado = 1;
         }
     }
 
@@ -191,5 +185,9 @@ void excluirAluno(char *matricula) {
     // Renomeia o arquivo temporário para o nome original
     rename("temp.bin", RELATIVE_PATH_DB);
 
-    printf("Aluno excluído com sucesso!\n");
+    if (encontrado) {
+        printf("Aluno excluído com sucesso!\n");
+    } else {
+        printf("Aluno não encontrado!!\n");
+    }
 }

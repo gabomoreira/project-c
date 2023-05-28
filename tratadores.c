@@ -28,37 +28,32 @@ void tratador_menu_aluno(Aluno **alunos, int *qtd_atual_aluno)
         }
         else
         {
-            Aluno *aluno = construir_aluno();
-            salvarAlunoBinario(aluno);
+            salvarAlunoBinario(construir_aluno());
         }
         break;
     case 2:
     {
-        imprimir_aluno(buscar_aluno());
+        Aluno *aluno = buscar_aluno();
+        if (aluno == NULL)
+        {
+            printf("Aluno não encontrado.\n");
+            return;
+        }
+
+        printf("Dados do Aluno:\n");
+        imprimir_aluno(aluno);
+
     }
     break;
     case 3:
     {
-        Aluno *aluno = construir_aluno();
-        atualizarAluno(aluno);
+        atualizarAluno(construir_aluno());
     }
 
     break;
     case 4:
     {
-        int posicao = 0;
-        aluno = buscar_aluno();
-
-        if (aluno)
-        {
-            destruirAluno(aluno);
-            alunos[posicao] = NULL;
-            printf("Aluno destruido\n");
-        }
-        else
-        {
-            printf("Aluno não encontrado!!\n");
-        }
+        remover_aluno();
     }
 
     break;
@@ -96,10 +91,8 @@ Aluno *construir_aluno()
     fgets(aluno.cpf, 9, stdin);
     printf("Nome\t> ");
     fgets(aluno.nome, 49, stdin);
-
-    aluno.endereco = construir_endereco();
     
-    return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, aluno.endereco);
+    return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, construir_endereco());
 }
 
 Aluno *buscar_aluno()
@@ -122,19 +115,30 @@ void atualizar_aluno(Aluno *aluno)
     return atualizarAluno(aluno);
 }
 
+void remover_aluno()
+{
+    char matricula[50];
+    printf("Matricula > ");
+    fgets(matricula, 49, stdin);
+    putchar('\n');
+
+    return excluirAluno(matricula);
+}
+
 void imprimir_aluno(Aluno *aluno)
 {
     printf("Matricula: %s", aluno->matricula);
-    printf("Nome: %s", aluno->nome);
-    printf("CPF: %s", aluno->cpf);
-    imprimir_endereco(aluno->endereco);
+    printf("CPF: %s\n", aluno->cpf);
+    printf("Nome: %s\n", aluno->nome);
+    printf("Endereco: %s, %s, %s, %s, %s\n",
+           aluno->endereco->logradouro,
+           aluno->endereco->bairro,
+           aluno->endereco->cidade,
+           aluno->endereco->estado,
+           aluno->endereco->numero);
 }
 
 void imprimir_endereco(Endereco *endereco)
 {
-    printf("Logradouro: %s", endereco->logradouro);
-    printf("Numero: %s", endereco->numero);
-    printf("Bairro: %s", endereco->bairro);
-    printf("Cidade: %s", endereco->cidade);
-    printf("Estado: %s", endereco->estado);
+    
 }

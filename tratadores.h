@@ -12,6 +12,8 @@ Aluno *construir_aluno();
 */
 Aluno *buscar_aluno();
 
+void remover_aluno();
+
 void imprimir_aluno(Aluno *aluno);
 
 void imprimir_endereco(Endereco *endereco);
