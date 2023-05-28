@@ -7,6 +7,7 @@
 
 // Declaração de uma constante para o caminho do db de aluno
 static const char* RELATIVE_PATH_DB = "db/professor.bin";
+static const char* RELATIVE_PATH_DB_TURMA = "db/turma.bin";
 
 // Função para obter a quantidade de professores armazenados em um arquivo binário
 int obterQuantidadeProfessoresRepository()
@@ -150,8 +151,16 @@ void excluirProfessorRepository(char *matricula) {
     FILE *temporario;
     Professor professor;
     int encontrado = 0;
+    int professorJaCadastrado = 0;
 
-    // Abre o arquivo binário para leitura
+    // acessar o abnco de dados de turmas e recuperar todos os registros
+    // verificar cada matricula de cada turma com o parametro da matricula que foi passado
+    professorJaCadastrado = 1;
+
+    if (professorJaCadastrado) {
+        
+    } else {
+        // Abre o arquivo binário para leitura
     arquivo = fopen(RELATIVE_PATH_DB, "rb");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
@@ -191,6 +200,8 @@ void excluirProfessorRepository(char *matricula) {
     } else {
         printf("Professor não encontrado!!\n");
     }
+    }
+    
 }
 void listarNomesProfessores()
  {

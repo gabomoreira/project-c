@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "constantes.h"
 #include <string.h>
+#include <stdlib.h>
 
 // funcionando aparentemente
 void tratador_menu_aluno()
@@ -86,7 +87,7 @@ void tratador_menu_professor()
     case 1:
         if (quantidadeProfessores >= MAX_PROFESSOR)
         {
-            printf("Número máximo de professores atingido\n");
+            printf("Numero maximo de professores atingido\n");
         }
         else
         {
@@ -149,7 +150,7 @@ void tratador_menu_turma()
          }
          else
          {
-            salvarTurmaRepository(construir_turma());
+            salvar_turma_service();
          }
          break;
     case 2:
@@ -328,12 +329,41 @@ Turma *construir_turma()
     fgets(turma.disciplina, 100, stdin);
     printf("Professor\t> ");
     fgets(turma.professor_turma, 100, stdin);
-    printf("Lista de alunos\t> ");
-    fgets(turma.lista_alunos, 100, stdin);
     printf("Media da turma\t> ");
     fgets(turma.media_turma, 100, stdin);
+
+    printf("Lista de alunos\t> \n");
+    char** matriculas = NULL;  // Ponteiro para a lista de strings
+    int tamanho = 0;           // Tamanho atual da lista
+
+    while (1) {
+        char matricula[50];
+        printf("Digite uma matricula (ou digite 'sair' para encerrar): ");
+        scanf("%s", matricula);
+
+        if (strcmp(matricula, "sair") == 0) {
+            break;  // Sai do loop quando a matrícula for 'sair'
+        }
+
+        // Realoca a lista de strings para acomodar a nova matrícula
+        tamanho++;
+        matriculas = (char**)realloc(matriculas, tamanho * sizeof(char*));
+        matriculas[tamanho - 1] = strdup(matricula);
+    }
+
+    printf("Matrículas adicionadas:\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("%s\n", matriculas[i]);
+        free(matriculas[i]);  // Libera a memória de cada matrícula
+    }
+
+    // Libera a memória alocada pela lista de strings
+    free(matriculas);
     
-    return criarTurma(turma.codigo, turma.disciplina, turma.professor_turma, turma.lista_alunos, turma.media_turma, construir_endereco());
+    // fgets(turma.lista_alunos, 100, stdin);
+  
+    
+    return criarTurma(turma.codigo, turma.disciplina, turma.professor_turma, matriculas, turma.media_turma);
 }
 
 Endereco *construir_endereco()

@@ -38,19 +38,37 @@ int obterQuantidadeTurmasRepository()
 }
 
 // Função para adicionar uma turma a um arquivo binário existente
-void salvarTurmaRepository(Turma *turma)
-{
-    FILE *arquivo = fopen(RELATIVE_PATH_DB, "ab");
-    if (arquivo)
-    {
-        fwrite(turma, sizeof(Turma), 1, arquivo);
+void salvarTurmaRepository(Turma *turma) {
+     // Verificar se já existe uma turma com o mesmo código
+    FILE* arquivo = fopen(RELATIVE_PATH_DB, "rb");
+    if (arquivo) {
+        Turma turmaExistente;
+        while (fread(&turmaExistente, sizeof(Turma), 1, arquivo) == 1) {
+            if (strcmp(turmaExistente.codigo, turma->codigo) == 0) {
+                printf("Já existe uma turma com o mesmo código.\n");
+                fclose(arquivo);
+                return;
+            }
+        }
         fclose(arquivo);
-        printf("Turma adicionada com sucesso!\n");
     }
-    else
-    {
-        perror("Erro ao abrir o arquivo.\n");
+
+    // Abrir o arquivo para escrita em modo binário (append)
+    arquivo = fopen(RELATIVE_PATH_DB, "ab");
+    if (!arquivo) {
+        perror("Erro ao abrir o arquivo para escrita.\n");
+        return;
     }
+
+    // Escrever a turma no arquivo
+    fwrite(turma, sizeof(Turma), 1, arquivo);
+    fclose(arquivo);
+
+    
+    free(turma);
+    free(turma->lista_alunos);
+
+    printf("Turma criada e armazenada no arquivo com sucesso.\n");
 }
 
 // Função para resgatar uma turma de um arquivo binário a partir da matrícula
@@ -95,50 +113,50 @@ Turma *resgatarTurmaRepository(char *codigo)
 
 // Função para atualizar uma turma de um arquivo binário
 void atualizarTurmaRepository(Turma *turma) {
-    FILE *arquivo;
-    FILE *temporario;
-    Turma turmaAtualizado;
+    // FILE *arquivo;
+    // FILE *temporario;
+    // Turma turmaAtualizado;
 
-    // Abre o arquivo binário para leitura
-    arquivo = fopen(RELATIVE_PATH_DB, "rb");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
-        return;
-    }
+    // // Abre o arquivo binário para leitura
+    // arquivo = fopen(RELATIVE_PATH_DB, "rb");
+    // if (arquivo == NULL) {
+    //     printf("Erro ao abrir o arquivo.\n");
+    //     return;
+    // }
 
-    // Abre um arquivo temporário para escrita
-    temporario = fopen("temp.bin", "wb");
-    if (temporario == NULL) {
-        printf("Erro ao abrir o arquivo temporário.\n");
-        fclose(arquivo);
-        return;
-    }
+    // // Abre um arquivo temporário para escrita
+    // temporario = fopen("temp.bin", "wb");
+    // if (temporario == NULL) {
+    //     printf("Erro ao abrir o arquivo temporário.\n");
+    //     fclose(arquivo);
+    //     return;
+    // }
 
-    // Lê cada registro do arquivo, atualiza os dados de turma se encontrar o código correspondente
-    while (fread(&turmaAtualizado, sizeof(Turma), 1, arquivo) == 1) {
-        if (strcmp(turmaAtualizado.codigo, turma->codigo) == 0) {
-            // Atualiza os dados da turma
-            strcpy(turmaAtualizado.disciplina, turma->disciplina);
-            strcpy(turmaAtualizado.professor_turma, turma->professor_turma);
-            strcpy(turmaAtualizado.lista_alunos, turma->lista_alunos);
-            strcpy(turmaAtualizado.media_turma, turma->media_turma);        
+    // // Lê cada registro do arquivo, atualiza os dados de turma se encontrar o código correspondente
+    // while (fread(&turmaAtualizado, sizeof(Turma), 1, arquivo) == 1) {
+    //     if (strcmp(turmaAtualizado.codigo, turma->codigo) == 0) {
+    //         // Atualiza os dados da turma
+    //         strcpy(turmaAtualizado.disciplina, turma->disciplina);
+    //         strcpy(turmaAtualizado.professor_turma, turma->professor_turma);
+    //         strcpy(turmaAtualizado.lista_alunos, turma->lista_alunos);
+    //         strcpy(turmaAtualizado.media_turma, turma->media_turma);        
 
-        }
-        // Escreve o registro atualizado no arquivo temporário
-        fwrite(&turmaAtualizado, sizeof(Turma), 1, temporario);
-    }
+    //     }
+    //     // Escreve o registro atualizado no arquivo temporário
+    //     fwrite(&turmaAtualizado, sizeof(Turma), 1, temporario);
+    // }
 
-    // Fecha os arquivos
-    fclose(arquivo);
-    fclose(temporario);
+    // // Fecha os arquivos
+    // fclose(arquivo);
+    // fclose(temporario);
 
-    // Remove o arquivo original
-    remove(RELATIVE_PATH_DB);
+    // // Remove o arquivo original
+    // remove(RELATIVE_PATH_DB);
 
-    // Renomeia o arquivo temporário para o nome original
-    rename("temp.bin", RELATIVE_PATH_DB);
+    // // Renomeia o arquivo temporário para o nome original
+    // rename("temp.bin", RELATIVE_PATH_DB);
 
-    printf("Dados da turma atualizados com sucesso!\n");
+    // printf("Dados da turma atualizados com sucesso!\n");
 }
 
 // Função para remover uma turma de um arquivo binário
