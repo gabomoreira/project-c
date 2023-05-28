@@ -191,32 +191,12 @@ void tratador_menu_turma()
 
 void tratador_menu_estatistica()
 {
-    int opcao = menu_crud_aluno();
-    // Aluno *aluno = NULL;
-    
-    // int quantidadeAlunos = obterQuantidadeAlunos();
-
-    // if (quantidadeAlunos != -1)
-    // {
-    //     printf("Quantidade de alunos armazenados: %d\n", quantidadeAlunos);
-    // } else {
-    //     printf("Erro no banco");
-    // }
+    int opcao = menu_crud_estatistica();
 
     switch (opcao)
     {
     case 1:
-        // funcao para o case 1
-
-        // if (quantidadeAlunos >= MAX_ALUNO)
-        // {
-        //     printf("Número máximo de alunos atingido\n");
-        // }
-        // else
-        // {
-        //     salvarAlunoBinario(construir_aluno());
-        // }
-        // break;
+        listarNomesProfessores();
     case 2:
     {
          // funcao para o case 2

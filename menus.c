@@ -93,3 +93,25 @@ int menu_crud_turma()
     } while (1);
 }
 
+int menu_crud_estatistica()
+{
+    int opcao = 0;
+    do
+    {
+        printf("== Menu Estatística==\n\n");
+        printf("1 - Listar nome dos Professores\n");
+        printf("2 - Listar Matricula dos Professores sem Turma\n");
+        printf("3 - Calcular Média de Todas as Turmas\n");
+        printf("4- Voltar menu anterior\n");
+        printf("Opcao > ");
+        scanf("%d", &opcao);
+        getchar();
+        if (opcao > 0 && opcao < 5)
+        {
+            return opcao;
+        }
+        printf("Opcao inválida!! Tente novamente\n\n");
+
+    } while (1);
+}
+
