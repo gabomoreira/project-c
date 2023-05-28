@@ -14,5 +14,3 @@ void atualizarAluno(Aluno *aluno);
 
 // Função para remover um aluno em um arquivo binário
 void excluirAluno(char *matricula);
-
-

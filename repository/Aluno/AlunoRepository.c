@@ -38,19 +38,44 @@ int obterQuantidadeAlunos()
 }
 
 // Função para adicionar um aluno a um arquivo binário existente
-void salvarAlunoBinario(Aluno *aluno)
+void salvarAlunoBinario(Aluno* aluno) 
 {
-    FILE *arquivo = fopen(RELATIVE_PATH_DB, "ab");
-    if (arquivo)
+    FILE *arquivo = fopen(RELATIVE_PATH_DB, "ab+");
+
+    if (arquivo == NULL)
     {
-        fwrite(aluno, sizeof(Aluno), 1, arquivo);
-        fclose(arquivo);
-        printf("Aluno adicionado com sucesso!\n");
+        printf("Erro ao abrir o arquivo.\n");
+        return;
     }
-    else
+
+    rewind(arquivo);
+    Aluno alunoExistente;
+    while (fread(&alunoExistente, sizeof(Aluno), 1, arquivo) == 1)
     {
-        perror("Erro ao abrir o arquivo.\n");
+        if (strcmp(alunoExistente.matricula, aluno->matricula) == 0)
+        {
+            printf("Ja existe um aluno com essa matricula.\n");
+            fclose(arquivo);
+            return;
+        }
     }
+
+    rewind(arquivo);
+    while (fread(&alunoExistente, sizeof(Aluno), 1, arquivo) == 1)
+    {
+        if (strcmp(alunoExistente.cpf, aluno->cpf) == 0)
+        {
+            printf("Ja existe um aluno com esse CPF.\n");
+            fclose(arquivo);
+            return;
+        }
+    }
+
+    fwrite(aluno, sizeof(Aluno), 1, arquivo);
+
+    printf("Aluno cadastrado com sucesso!\n");
+
+    fclose(arquivo);
 }
 
 // Função para resgatar um aluno de um arquivo binário a partir da matrícula
@@ -192,3 +217,4 @@ void excluirAluno(char *matricula) {
         printf("Aluno não encontrado!!\n");
     }
 }
+

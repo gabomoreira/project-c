@@ -310,11 +310,11 @@ Aluno *construir_aluno()
     Aluno aluno;
 
     printf("Matricula\t> ");
-    fgets(aluno.matricula, 9, stdin);
+    fgets(aluno.matricula,100, stdin);
     printf("CPF\t> ");
-    fgets(aluno.cpf, 9, stdin);
+    fgets(aluno.cpf, 100, stdin);
     printf("Nome\t> ");
-    fgets(aluno.nome, 49, stdin);
+    fgets(aluno.nome, 100, stdin);
     
     return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, construir_endereco());
 }
