@@ -1,4 +1,5 @@
 #include "tratadores.h"
+#include "./repository/Aluno/AlunoRepository.h"
 #include "menus.h"
 #include <stdio.h>
 #include "constantes.h"
@@ -8,54 +9,46 @@ void tratador_menu_aluno(Aluno **alunos, int *qtd_atual_aluno)
 {
     int opcao = menu_crud_aluno();
     Aluno *aluno = NULL;
+    
+    int quantidadeAlunos = obterQuantidadeAlunos();
+
+    if (quantidadeAlunos != -1)
+    {
+        printf("Quantidade de alunos armazenados: %d\n", quantidadeAlunos);
+    } else {
+        printf("Erro no banco");
+    }
+
     switch (opcao)
     {
     case 1:
-        if (*qtd_atual_aluno >= MAX_ALUNO)
+        if (quantidadeAlunos >= MAX_ALUNO)
         {
             printf("Número máximo de alunos atingido\n");
         }
         else
         {
-            // Passo 1: buscar posicao disponível
-            int i = 0;
-            for (; i < *qtd_atual_aluno; i++)
-            {
-                if (alunos[i] != NULL)
-                {
-                    // significa que esta posição está livre para uso
-                    break;
-                }
-            }
             Aluno *aluno = construir_aluno();
-            alunos[i] = aluno;
-            *qtd_atual_aluno++;
+            salvarAlunoBinario(aluno);
         }
         break;
     case 2:
     {
-        int posicao = 0;
-        aluno = buscar_aluno(alunos, &posicao);
-        if (aluno)
-        {
-            imprimir_aluno(aluno);
-        }
-        else
-        {
-            printf("Aluno não encontrado!!\n");
-        }
+        imprimir_aluno(buscar_aluno());
     }
     break;
     case 3:
     {
-        printf("Implementar a atualização de aluno\n");
+        Aluno *aluno = construir_aluno();
+        atualizarAluno(aluno);
     }
 
     break;
     case 4:
     {
         int posicao = 0;
-        aluno = buscar_aluno(alunos, &posicao);
+        aluno = buscar_aluno();
+
         if (aluno)
         {
             destruirAluno(aluno);
@@ -87,7 +80,7 @@ Endereco *construir_endereco()
     fgets(endereco.cidade, 49, stdin);
     printf("Estado\t> ");
     fgets(endereco.estado, 9, stdin);
-    printf("Número\t> ");
+    printf("Numero\t> ");
     fgets(endereco.numero, 9, stdin);
 
     return criarEndereco(endereco.logradouro, endereco.bairro, endereco.cidade, endereco.estado, endereco.numero);
@@ -96,40 +89,42 @@ Endereco *construir_endereco()
 Aluno *construir_aluno()
 {
     Aluno aluno;
-    printf("Matrícula\t> ");
+
+    printf("Matricula\t> ");
     fgets(aluno.matricula, 9, stdin);
     printf("CPF\t> ");
     fgets(aluno.cpf, 9, stdin);
     printf("Nome\t> ");
     fgets(aluno.nome, 49, stdin);
+
     aluno.endereco = construir_endereco();
+    
     return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, aluno.endereco);
 }
 
-Aluno *buscar_aluno(Aluno **alunos, int *posicao)
+Aluno *buscar_aluno()
 {
     char matricula[50];
-    printf("Matrícula > ");
+    printf("Matricula > ");
     fgets(matricula, 49, stdin);
-    Aluno *resultado = NULL;
-    int pos_resultado = -1;
-    for (int i = 0; i < MAX_ALUNO; i++)
-    {
-        // Vamos testar se o aluno existe e se a matricula e a buscada
-        // strcmp compara strings. Se for 0 indica que são iguais
-        if (alunos[i] && !strcmp(matricula, alunos[i]->matricula))
-        {
-            resultado = alunos[i];
-            break;
-        }
-    }
-    *posicao = pos_resultado;
-    return resultado;
+    putchar('\n');
+
+    return resgatarAluno(matricula);
+}
+
+void atualizar_aluno(Aluno *aluno)
+{
+    char matricula[50];
+    printf("Matricula > ");
+    fgets(matricula, 49, stdin);
+    putchar('\n');
+
+    return atualizarAluno(aluno);
 }
 
 void imprimir_aluno(Aluno *aluno)
 {
-    printf("Matrícula: %s", aluno->matricula);
+    printf("Matricula: %s", aluno->matricula);
     printf("Nome: %s", aluno->nome);
     printf("CPF: %s", aluno->cpf);
     imprimir_endereco(aluno->endereco);
@@ -138,7 +133,7 @@ void imprimir_aluno(Aluno *aluno)
 void imprimir_endereco(Endereco *endereco)
 {
     printf("Logradouro: %s", endereco->logradouro);
-    printf("Número: %s", endereco->numero);
+    printf("Numero: %s", endereco->numero);
     printf("Bairro: %s", endereco->bairro);
     printf("Cidade: %s", endereco->cidade);
     printf("Estado: %s", endereco->estado);
