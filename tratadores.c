@@ -198,7 +198,11 @@ void tratador_menu_estatistica()
     switch (opcao)
     {
     case 1:
+    {
         listarNomesProfessores();
+    }
+    break;
+
     case 2:
     {
         printAllTeachesNoClass();

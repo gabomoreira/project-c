@@ -8,6 +8,9 @@
 // Declaração de uma constante para o caminho do db de turma
 static const char* RELATIVE_PATH_DB = "db/turma.bin";
 
+// Declaração de uma constante para o caminho do db de turma
+static const char* RELATIVE_PATH_DB2 = "db/turma.bin";
+
 // Função para obter a quantidade de turmas armazenados em um arquivo binário
 int obterQuantidadeTurmasRepository()
 {

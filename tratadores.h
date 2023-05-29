@@ -55,6 +55,8 @@ void remover_turma_service();
 void imprimir_aluno(Aluno *aluno);
 void imprimir_professor(Professor *professor);
 void imprimir_turma(Turma *turma);
+// professores sem turma
+listarProfessoresSemTurma();
 
 
 
