@@ -157,15 +157,7 @@ void tratador_menu_turma()
     {
          // funcao para o case 2
 
-         Turma *turma = buscar_turma_service();
-         if (turma == NULL)
-         {
-             printf("Turma não encontrada.\n");
-             return;
-         }
-
-         printf("Dados da Turma:\n");
-         imprimir_turma(turma);
+        buscar_turma_service();
 
     }
     break;
@@ -173,7 +165,7 @@ void tratador_menu_turma()
     {
          // funcao para o case 3
 
-        atualizar_turma_service(construir_turma());
+        // atualizar_turma_service(construir_turma());
     }
 
     break;
@@ -278,16 +270,17 @@ void remover_professor_service() {
 
 void salvar_turma_service() {
 
-    return salvarTurmaRepository(construir_turma());
+    return cadastrarTurma();
 }
 
-Turma *buscar_turma_service() {
-    char codigo[50];
-    printf("Codigo: > ");
-    fgets(codigo, 50, stdin);
-    putchar('\n');
+void buscar_turma_service() {
+     char codigo[50];
 
-    return resgatarTurmaRepository(codigo);
+    printf("Digite o código da turma: ");
+    fgets(codigo, sizeof(codigo), stdin);
+    codigo[strcspn(codigo, "\n")] = '\0';
+
+    return imprimirTurma(codigo);
 }
 
 void atualizar_turma_service(Turma *turma)
@@ -346,53 +339,6 @@ Professor *construir_professor()
     fgets(professor.nome, 100, stdin);
     
     return criarProfessor(professor.matricula, professor.cpf, professor.nome, construir_endereco());
-}
-
-Turma *construir_turma()
-{
-    Turma turma;
-
-    printf("Codigo\t> ");
-    fgets(turma.codigo, 100, stdin);
-    printf("Disciplina\t> ");
-    fgets(turma.disciplina, 100, stdin);
-    printf("Professor\t> ");
-    fgets(turma.professor_turma, 100, stdin);
-    printf("Media da turma\t> ");
-    fgets(turma.media_turma, 100, stdin);
-
-    printf("Lista de alunos\t> \n");
-    char** matriculas = NULL;  // Ponteiro para a lista de strings
-    int tamanho = 0;           // Tamanho atual da lista
-
-    while (1) {
-        char matricula[50];
-        printf("Digite uma matricula (ou digite 'sair' para encerrar): ");
-        scanf("%s", matricula);
-
-        if (strcmp(matricula, "sair") == 0) {
-            break;  // Sai do loop quando a matrícula for 'sair'
-        }
-
-        // Realoca a lista de strings para acomodar a nova matrícula
-        tamanho++;
-        matriculas = (char**)realloc(matriculas, tamanho * sizeof(char*));
-        matriculas[tamanho - 1] = strdup(matricula);
-    }
-
-    printf("Matrículas adicionadas:\n");
-    for (int i = 0; i < tamanho; i++) {
-        printf("%s\n", matriculas[i]);
-        free(matriculas[i]);  // Libera a memória de cada matrícula
-    }
-
-    // Libera a memória alocada pela lista de strings
-    free(matriculas);
-    
-    // fgets(turma.lista_alunos, 100, stdin);
-  
-    
-    return criarTurma(turma.codigo, turma.disciplina, turma.professor_turma, matriculas, turma.media_turma);
 }
 
 Endereco *construir_endereco()
@@ -520,4 +466,67 @@ void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor*
             printf("Matricula: %s", professores[i].matricula);
         }
     }
+}
+
+
+
+void cadastrarTurma() {
+    Turma turma;
+
+    printf("Digite o código da turma: ");
+    fgets(turma.codigo, sizeof(turma.codigo), stdin);
+    turma.codigo[strcspn(turma.codigo, "\n")] = '\0';
+
+    printf("Digite a disciplina: ");
+    fgets(turma.disciplina, sizeof(turma.disciplina), stdin);
+    turma.disciplina[strcspn(turma.disciplina, "\n")] = '\0';
+
+    printf("Digite o professor da turma: ");
+    fgets(turma.professor_turma, sizeof(turma.professor_turma), stdin);
+    turma.professor_turma[strcspn(turma.professor_turma, "\n")] = '\0';
+
+    printf("Digite a média da turma: ");
+    scanf("%f", &turma.media_turma);
+    getchar(); // Limpar o buffer do enter
+
+    printf("Digite a lista de alunos (separados por vírgula): ");
+    fgets(turma.lista_alunos, sizeof(turma.lista_alunos), stdin);
+    turma.lista_alunos[strcspn(turma.lista_alunos, "\n")] = '\0';
+
+    FILE* arquivo = fopen("db/turma.bin", "ab");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    // Escrever a estrutura Turma no arquivo binário
+    fwrite(&turma, sizeof(Turma), 1, arquivo);
+
+    fclose(arquivo);
+
+    printf("Turma cadastrada com sucesso.\n");
+}
+
+void imprimirTurma(const char* codigo) {
+    FILE* arquivo = fopen("db/turma.bin", "rb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    Turma turma;
+
+    while (fread(&turma, sizeof(Turma), 1, arquivo) == 1) {
+        if (strcmp(turma.codigo, codigo) == 0) {
+            printf("Código da Turma: %s\n", turma.codigo);
+            printf("Disciplina: %s\n", turma.disciplina);
+            printf("Professor: %s\n", turma.professor_turma);
+            printf("Lista de Alunos: %s\n", turma.lista_alunos);
+            printf("Média da Turma: %.2f\n", turma.media_turma);
+            printf("\n");
+            break;
+        }
+    }
+
+    fclose(arquivo);
 }

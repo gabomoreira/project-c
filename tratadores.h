@@ -30,6 +30,8 @@ void remover_aluno();
 
 void imprimir_endereco(Endereco *endereco);
 
+void cadastrarTurma();
+
 /**
  professor services
 */
@@ -44,7 +46,7 @@ void remover_professor_service();
 */
 
 void salvar_turma_service();
-Turma *buscar_turma_service();
+void buscar_turma_service();
 void atualizar_turma_service(Turma *turma);
 void remover_turma_service();
 
@@ -55,6 +57,7 @@ void remover_turma_service();
 void imprimir_aluno(Aluno *aluno);
 void imprimir_professor(Professor *professor);
 void imprimir_turma(Turma *turma);
+void imprimirTurma(const char* codigo);
 
 
 
