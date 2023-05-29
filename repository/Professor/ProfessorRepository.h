@@ -18,5 +18,8 @@ void excluirProfessorRepository(char *matricula);
 //função para listar os nomes dos professores
 void listarNomesProfessores();
 
+//função para buscar todos os professores
+Professor* buscarProfessoresRepository(int* numProfessores);
+
 
 

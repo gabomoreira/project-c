@@ -201,17 +201,8 @@ void tratador_menu_estatistica()
         listarNomesProfessores();
     case 2:
     {
-         // funcao para o case 2
-
-        // Aluno *aluno = buscar_aluno();
-        // if (aluno == NULL)
-        // {
-        //     printf("Aluno não encontrado.\n");
-        //     return;
-        // }
-
-        // printf("Dados do Aluno:\n");
-        // imprimir_aluno(aluno);
+        printAllTeachesNoClass();
+        return;
 
     }
     break;
@@ -298,6 +289,30 @@ void remover_turma_service() {
     putchar('\n');
 
     return excluirTurmaRepository(codigo);
+}
+
+int printAllTeachesNoClass() {
+    int numTurmas;
+    Turma* turmas = buscarTurmasRepository(&numTurmas);
+
+    if (!turmas) {
+        printf("Erro ao buscar as turmas.\n");
+        return 1;
+    }
+
+    int numProfessores;
+    Professor* professores = buscarProfessoresRepository(&numProfessores);
+
+    if (!professores) {
+        printf("Erro ao buscar os professores.\n");
+        free(turmas);
+        return 1;
+    }
+
+    imprimirProfessoresNaoRelacionados(turmas, numTurmas, professores, numProfessores);
+
+    free(turmas);
+    free(professores);
 }
 
 
@@ -472,4 +487,23 @@ void imprimir_turma(Turma *turma)
 void imprimir_endereco(Endereco *endereco)
 {
     
+}
+
+void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor* professores, int numProfessores) {
+    int i, j;
+    int professorRelacionado;
+
+    printf("Professores nao relacionados a nenhuma turma:\n");
+    for (i = 0; i < numProfessores; i++) {
+        professorRelacionado = 0;
+        for (j = 0; j < numTurmas; j++) {
+            if (strcmp(professores[i].matricula, turmas[j].professor_turma) == 0) {
+                professorRelacionado = 1;
+                break;
+            }
+        }
+        if (!professorRelacionado) {
+            printf("Matricula: %s", professores[i].matricula);
+        }
+    }
 }

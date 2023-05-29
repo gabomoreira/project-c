@@ -56,4 +56,9 @@ void imprimir_aluno(Aluno *aluno);
 void imprimir_professor(Professor *professor);
 void imprimir_turma(Turma *turma);
 
+
+
+int printAllTeachesNoClass();
+void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor* professores, int numProfessores);
+
 #endif

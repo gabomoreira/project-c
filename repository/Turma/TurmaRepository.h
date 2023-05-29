@@ -15,4 +15,7 @@ void atualizarTurmaRepository(Turma *turma);
 // Função para remover uma turma em um arquivo binário
 void excluirTurmaRepository(char *codigo);
 
+// Função para buscar todas as turmas em um arquivo binário
+Turma* buscarTurmasRepository(int* numTurmas);
+
 

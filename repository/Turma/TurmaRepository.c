@@ -207,3 +207,29 @@ void excluirTurmaRepository(char *codigo) {
         printf("Turma não encontrada!!\n");
     }
 }
+
+Turma* buscarTurmasRepository(int* numTurmas) {
+    FILE* arquivo = fopen(RELATIVE_PATH_DB, "rb");
+    if (!arquivo) {
+        perror("Erro ao abrir o arquivo de turmas.\n");
+        return NULL;
+    }
+
+    Turma* turmas = NULL;
+    Turma turma;
+
+    *numTurmas = 0;
+    while (fread(&turma, sizeof(Turma), 1, arquivo) == 1) {
+        turmas = realloc(turmas, (*numTurmas + 1) * sizeof(Turma));
+        if (!turmas) {
+            perror("Erro ao alocar memória para as turmas.\n");
+            fclose(arquivo);
+            return NULL;
+        }
+        turmas[*numTurmas] = turma;
+        (*numTurmas)++;
+    }
+
+    fclose(arquivo);
+    return turmas;
+}
