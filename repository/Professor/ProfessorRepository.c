@@ -7,6 +7,7 @@
 
 // Declaração de uma constante para o caminho do db de aluno
 static const char* RELATIVE_PATH_DB = "db/professor.bin";
+static const char* RELATIVE_PATH_DB_ = "db/professor.bin";
 
 // Função para obter a quantidade de professores armazenados em um arquivo binário
 int obterQuantidadeProfessoresRepository()
@@ -175,8 +176,16 @@ void excluirProfessorRepository(char *matricula) {
     FILE *temporario;
     Professor professor;
     int encontrado = 0;
+    int professorJaCadastrado = 0;
 
-    // Abre o arquivo binário para leitura
+    // acessar o abnco de dados de turmas e recuperar todos os registros
+    // verificar cada matricula de cada turma com o parametro da matricula que foi passado
+    professorJaCadastrado = 1;
+
+    if (professorJaCadastrado) {
+        
+    } else {
+        // Abre o arquivo binário para leitura
     arquivo = fopen(RELATIVE_PATH_DB, "rb");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
@@ -216,7 +225,8 @@ void excluirProfessorRepository(char *matricula) {
     } else {
         printf("Professor não encontrado!!\n");
     }
-}
+    
+}}
 void listarNomesProfessores()
  {
     
@@ -255,3 +265,29 @@ void listarNomesProfessores()
     fclose(fp);
 }
 
+
+Professor* buscarProfessoresRepository(int* numProfessores) {
+    FILE* arquivo = fopen(RELATIVE_PATH_DB, "rb");
+    if (!arquivo) {
+        perror("Erro ao abrir o arquivo de professores.\n");
+        return NULL;
+    }
+
+    Professor* professores = NULL;
+    Professor professor;
+
+    *numProfessores = 0;
+    while (fread(&professor, sizeof(Professor), 1, arquivo) == 1) {
+        professores = realloc(professores, (*numProfessores + 1) * sizeof(Professor));
+        if (!professores) {
+            perror("Erro ao alocar memória para os professores.\n");
+            fclose(arquivo);
+            return NULL;
+        }
+        professores[*numProfessores] = professor;
+        (*numProfessores)++;
+    }
+
+    fclose(arquivo);
+    return professores;
+}

@@ -1,10 +1,12 @@
 #include "tratadores.h"
 #include "./repository/Aluno/AlunoRepository.h"
 #include "./repository/Professor/ProfessorRepository.h"
+#include "./repository/Turma/TurmaRepository.h"
 #include "menus.h"
 #include <stdio.h>
 #include "constantes.h"
 #include <string.h>
+#include <stdlib.h>
 
 // funcionando aparentemente
 void tratador_menu_aluno()
@@ -85,7 +87,7 @@ void tratador_menu_professor()
     case 1:
         if (quantidadeProfessores >= MAX_PROFESSOR)
         {
-            printf("Número máximo de professores atingido\n");
+            printf("Numero maximo de professores atingido\n");
         }
         else
         {
@@ -125,45 +127,45 @@ void tratador_menu_professor()
 
 void tratador_menu_turma()
 {
-    int opcao = menu_crud_aluno();
-    // Aluno *aluno = NULL;
+    int opcao = menu_crud_turma();
+    Turma *turma = NULL;
     
-    // int quantidadeAlunos = obterQuantidadeAlunos();
+    int quantidadeTurmas = obterQuantidadeTurmasRepository();
 
-    // if (quantidadeAlunos != -1)
-    // {
-    //     printf("Quantidade de alunos armazenados: %d\n", quantidadeAlunos);
-    // } else {
-    //     printf("Erro no banco");
-    // }
+    if (quantidadeTurmas != -1)
+    {
+        printf("Quantidade de turmas armazenadas: %d\n", quantidadeTurmas);
+    } else {
+         printf("Erro no banco");
+     }
 
     switch (opcao)
     {
     case 1:
         // funcao para o case 1
 
-        // if (quantidadeAlunos >= MAX_ALUNO)
-        // {
-        //     printf("Número máximo de alunos atingido\n");
-        // }
-        // else
-        // {
-        //     salvarAlunoBinario(construir_aluno());
-        // }
-        // break;
+        if (quantidadeTurmas >= MAX_TURMA)
+        {
+             printf("Número máximo de turmas atingido\n");
+         }
+         else
+         {
+            salvar_turma_service();
+         }
+         break;
     case 2:
     {
          // funcao para o case 2
 
-        // Aluno *aluno = buscar_aluno();
-        // if (aluno == NULL)
-        // {
-        //     printf("Aluno não encontrado.\n");
-        //     return;
-        // }
+         Turma *turma = buscar_turma_service();
+         if (turma == NULL)
+         {
+             printf("Turma não encontrada.\n");
+             return;
+         }
 
-        // printf("Dados do Aluno:\n");
-        // imprimir_aluno(aluno);
+         printf("Dados da Turma:\n");
+         imprimir_turma(turma);
 
     }
     break;
@@ -171,7 +173,7 @@ void tratador_menu_turma()
     {
          // funcao para o case 3
 
-        // atualizarAluno(construir_aluno());
+        atualizar_turma_service(construir_turma());
     }
 
     break;
@@ -179,7 +181,7 @@ void tratador_menu_turma()
     {
          // funcao para o case 4
 
-        // remover_aluno();
+        remover_turma_service();
     }
 
     break;
@@ -196,20 +198,15 @@ void tratador_menu_estatistica()
     switch (opcao)
     {
     case 1:
+    {
         listarNomesProfessores();
+    }
+    break;
+
     case 2:
     {
-         // funcao para o case 2
-
-        // Aluno *aluno = buscar_aluno();
-        // if (aluno == NULL)
-        // {
-        //     printf("Aluno não encontrado.\n");
-        //     return;
-        // }
-
-        // printf("Dados do Aluno:\n");
-        // imprimir_aluno(aluno);
+        printAllTeachesNoClass();
+        return;
 
     }
     break;
@@ -267,6 +264,60 @@ void remover_professor_service() {
     return excluirProfessorRepository(matricula);
 }
 
+// turma services
+
+void salvar_turma_service() {
+
+    return salvarTurmaRepository(construir_turma());
+}
+
+Turma *buscar_turma_service() {
+    char codigo[50];
+    printf("Codigo: > ");
+    fgets(codigo, 50, stdin);
+    putchar('\n');
+
+    return resgatarTurmaRepository(codigo);
+}
+
+void atualizar_turma_service(Turma *turma)
+{
+    return atualizarTurmaRepository(turma);
+}
+
+void remover_turma_service() {
+
+    char codigo[50];
+    printf("Codigo > ");
+    fgets(codigo, 50, stdin);
+    putchar('\n');
+
+    return excluirTurmaRepository(codigo);
+}
+
+int printAllTeachesNoClass() {
+    int numTurmas;
+    Turma* turmas = buscarTurmasRepository(&numTurmas);
+
+    if (!turmas) {
+        printf("Erro ao buscar as turmas.\n");
+        return 1;
+    }
+
+    int numProfessores;
+    Professor* professores = buscarProfessoresRepository(&numProfessores);
+
+    if (!professores) {
+        printf("Erro ao buscar os professores.\n");
+        free(turmas);
+        return 1;
+    }
+
+    imprimirProfessoresNaoRelacionados(turmas, numTurmas, professores, numProfessores);
+
+    free(turmas);
+    free(professores);
+}
 
 
 
@@ -278,13 +329,60 @@ Professor *construir_professor()
     Professor professor;
 
     printf("Matricula\t> ");
-    fgets(professor.matricula, 9, stdin);
+    fgets(professor.matricula, 100, stdin);
     printf("CPF\t> ");
-    fgets(professor.cpf, 9, stdin);
+    fgets(professor.cpf, 100, stdin);
     printf("Nome\t> ");
-    fgets(professor.nome, 49, stdin);
+    fgets(professor.nome, 100, stdin);
     
     return criarProfessor(professor.matricula, professor.cpf, professor.nome, construir_endereco());
+}
+
+Turma *construir_turma()
+{
+    Turma turma;
+
+    printf("Codigo\t> ");
+    fgets(turma.codigo, 100, stdin);
+    printf("Disciplina\t> ");
+    fgets(turma.disciplina, 100, stdin);
+    printf("Professor\t> ");
+    fgets(turma.professor_turma, 100, stdin);
+    printf("Media da turma\t> ");
+    fgets(turma.media_turma, 100, stdin);
+
+    printf("Lista de alunos\t> \n");
+    char** matriculas = NULL;  // Ponteiro para a lista de strings
+    int tamanho = 0;           // Tamanho atual da lista
+
+    while (1) {
+        char matricula[50];
+        printf("Digite uma matricula (ou digite 'sair' para encerrar): ");
+        scanf("%s", matricula);
+
+        if (strcmp(matricula, "sair") == 0) {
+            break;  // Sai do loop quando a matrícula for 'sair'
+        }
+
+        // Realoca a lista de strings para acomodar a nova matrícula
+        tamanho++;
+        matriculas = (char**)realloc(matriculas, tamanho * sizeof(char*));
+        matriculas[tamanho - 1] = strdup(matricula);
+    }
+
+    printf("Matrículas adicionadas:\n");
+    for (int i = 0; i < tamanho; i++) {
+        printf("%s\n", matriculas[i]);
+        free(matriculas[i]);  // Libera a memória de cada matrícula
+    }
+
+    // Libera a memória alocada pela lista de strings
+    free(matriculas);
+    
+    // fgets(turma.lista_alunos, 100, stdin);
+  
+    
+    return criarTurma(turma.codigo, turma.disciplina, turma.professor_turma, matriculas, turma.media_turma);
 }
 
 Endereco *construir_endereco()
@@ -310,7 +408,7 @@ Aluno *construir_aluno()
     Aluno aluno;
 
     printf("Matricula\t> ");
-    fgets(aluno.matricula,100, stdin);
+    fgets(aluno.matricula, 100, stdin);
     printf("CPF\t> ");
     fgets(aluno.cpf, 100, stdin);
     printf("Nome\t> ");
@@ -380,8 +478,36 @@ void imprimir_professor(Professor *professor)
            professor->endereco->numero);
 }
 
+void imprimir_turma(Turma *turma)
+{
+    printf("Codigo: %s\n", turma->codigo);
+    printf("Disciplina: %s\n", turma->disciplina);
+    printf("Professor: %s\n", turma->professor_turma);
+    printf("Lista de alunos: %s\n", turma->lista_alunos);
+    printf("Media da turma: %s\n", turma->media_turma);
+}
+
 
 void imprimir_endereco(Endereco *endereco)
 {
     
+}
+
+void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor* professores, int numProfessores) {
+    int i, j;
+    int professorRelacionado;
+
+    printf("Professores nao relacionados a nenhuma turma:\n");
+    for (i = 0; i < numProfessores; i++) {
+        professorRelacionado = 0;
+        for (j = 0; j < numTurmas; j++) {
+            if (strcmp(professores[i].matricula, turmas[j].professor_turma) == 0) {
+                professorRelacionado = 1;
+                break;
+            }
+        }
+        if (!professorRelacionado) {
+            printf("Matricula: %s", professores[i].matricula);
+        }
+    }
 }

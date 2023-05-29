@@ -19,6 +19,7 @@ void tratador_menu_estatistica();
 Endereco *construir_endereco();
 Aluno *construir_aluno();
 Professor *construir_professor();
+Turma *construir_turma();
 
 /*
     Busca um aluno
@@ -38,11 +39,28 @@ Professor *buscar_professor_service();
 void atualizar_professor_service(Professor *professor);
 void remover_professor_service();
 
+/**
+ turma services
+*/
+
+void salvar_turma_service();
+Turma *buscar_turma_service();
+void atualizar_turma_service(Turma *turma);
+void remover_turma_service();
+
 /*
     impressoes
 */
 
 void imprimir_aluno(Aluno *aluno);
 void imprimir_professor(Professor *professor);
+void imprimir_turma(Turma *turma);
+// professores sem turma
+listarProfessoresSemTurma();
+
+
+
+int printAllTeachesNoClass();
+void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor* professores, int numProfessores);
 
 #endif
