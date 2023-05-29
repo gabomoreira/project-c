@@ -257,11 +257,21 @@ void atualizar_professor_service(Professor *professor)
 void remover_professor_service() {
 
     char matricula[50];
+    int professorExiste = 0;
     printf("Matricula > ");
     fgets(matricula, 49, stdin);
     putchar('\n');
+    professorExiste = verificarProfessorTurma(matricula);
+    printf("%o\n", professorExiste);
+    if (professorExiste){
+        printf("Erro ao deletar professor\n");
+        printf("Professor esta relacionado a turma\n");
 
-    return excluirProfessorRepository(matricula);
+    }else{
+        excluirProfessorRepository(matricula);
+    }
+
+    return;
 }
 
 // turma services

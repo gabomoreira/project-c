@@ -1,4 +1,5 @@
 #include "./ProfessorRepository.h"
+
 #include "../../dados.h"
 #include "../../constantes.h"
 #include <stdlib.h>
@@ -176,16 +177,8 @@ void excluirProfessorRepository(char *matricula) {
     FILE *temporario;
     Professor professor;
     int encontrado = 0;
-    int professorJaCadastrado = 0;
 
-    // acessar o abnco de dados de turmas e recuperar todos os registros
-    // verificar cada matricula de cada turma com o parametro da matricula que foi passado
-    professorJaCadastrado = 1;
-
-    if (professorJaCadastrado) {
-        
-    } else {
-        // Abre o arquivo binário para leitura
+  // Abre o arquivo binário para leitura
     arquivo = fopen(RELATIVE_PATH_DB, "rb");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
@@ -226,7 +219,7 @@ void excluirProfessorRepository(char *matricula) {
         printf("Professor não encontrado!!\n");
     }
     
-}}
+ }
 void listarNomesProfessores()
  {
     

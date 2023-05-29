@@ -18,3 +18,6 @@ void excluirTurmaRepository(char *codigo);
 // Função para buscar todas as turmas em um arquivo binário
 Turma* buscarTurmasRepository(int* numTurmas);
 
+// Função que retorna se o professor está relacionado a uma turma
+int verificarProfessorTurma(char *matricula);
+

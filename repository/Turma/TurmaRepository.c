@@ -236,3 +236,26 @@ Turma* buscarTurmasRepository(int* numTurmas) {
     fclose(arquivo);
     return turmas;
 }
+
+int verificarProfessorTurma(char *matricula) {
+    FILE *arquivo;
+    arquivo = fopen(RELATIVE_PATH_DB, "rb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 0;
+    }
+
+    int encontrado = 0;
+    char professorTurma[50];
+
+    while (fread(professorTurma, sizeof(professorTurma), 1, arquivo) == 1) {
+        if (strcmp(professorTurma, matricula) == 0) {
+            encontrado = 1;
+            break;
+        }
+    }
+
+    fclose(arquivo);
+
+    return encontrado;
+}
