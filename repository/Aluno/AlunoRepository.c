@@ -170,51 +170,52 @@ void atualizarAluno(Aluno *aluno) {
 }
 
 // Função para remover um aluno de um arquivo binário
-void excluirAluno(char *matricula) {
+void excluirAluno(const char *matricula)
+{
     FILE *arquivo;
-    FILE *temporario;
+    FILE *arquivoTemp;
     Aluno aluno;
-    int encontrado = 0;
 
-    // Abre o arquivo binário para leitura
+    // Abrir o arquivo binário para leitura
     arquivo = fopen(RELATIVE_PATH_DB, "rb");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
 
-    // Abre um arquivo temporário para escrita
-    temporario = fopen("temp.bin", "wb");
-    if (temporario == NULL) {
-        printf("Erro ao abrir o arquivo temporário.\n");
+    // Criar um arquivo temporário para escrita
+    arquivoTemp = fopen("temp.bin", "wb");
+    if (arquivoTemp == NULL) {
+        printf("Erro ao criar o arquivo temporário.\n");
         fclose(arquivo);
         return;
     }
 
-    // Lê cada registro do arquivo, excluindo o aluno com a matrícula correspondente
+    // Ler cada aluno do arquivo original e copiar para o arquivo temporário,
+    // exceto o aluno com a matrícula fornecida
+    int alunoEncontrado = 0;
     while (fread(&aluno, sizeof(Aluno), 1, arquivo) == 1) {
-        if (strcmp(aluno.matricula, matricula) != 0) {
-            // Escreve o registro no arquivo temporário, exceto se for o aluno a ser excluído
-            fwrite(&aluno, sizeof(Aluno), 1, temporario);
-        } else {
-            encontrado = 1;
+        if (strcmp(aluno.matricula, matricula) == 0) {
+            alunoEncontrado = 1;
+            continue; // Ignorar o aluno a ser excluído
         }
+        fwrite(&aluno, sizeof(Aluno), 1, arquivoTemp);
     }
 
-    // Fecha os arquivos
+    // Fechar os arquivos
     fclose(arquivo);
-    fclose(temporario);
+    fclose(arquivoTemp);
 
-    // Remove o arquivo original
-    remove(RELATIVE_PATH_DB);
+    if (alunoEncontrado) {
+        // Remover o arquivo original
+        remove(RELATIVE_PATH_DB);
 
-    // Renomeia o arquivo temporário para o nome original
-    rename("temp.bin", RELATIVE_PATH_DB);
+        // Renomear o arquivo temporário para o nome original
+        rename("temp.bin", RELATIVE_PATH_DB);
 
-    if (encontrado) {
-        printf("Aluno excluído com sucesso!\n");
+        printf("Aluno excluído com sucesso.\n");
     } else {
-        printf("Aluno não encontrado!!\n");
+        remove("temp.bin"); // Não foi encontrado, então removemos o arquivo temporário
+        printf("Aluno não encontrado.\n");
     }
 }
-

@@ -57,7 +57,17 @@ void tratador_menu_aluno()
     break;
     case 4:
     {
-        remover_aluno();
+        
+        char matricula[10];
+
+  printf("Digite a matrícula do aluno a ser excluído: ");
+    fgets(matricula, sizeof(matricula), stdin);
+    matricula[strcspn(matricula, "\n")] = '\0';
+
+    verificarMatricula(matricula);
+
+
+    excluirAluno(matricula);
     }
 
     break;
@@ -344,16 +354,6 @@ void atualizar_aluno(Aluno *aluno)
     putchar('\n');
 
     return atualizarAluno(aluno);
-}
-
-void remover_aluno()
-{
-    char matricula[50];
-    printf("Matricula > ");
-    fgets(matricula, 49, stdin);
-    putchar('\n');
-
-    return excluirAluno(matricula);
 }
 
 
@@ -665,4 +665,31 @@ void calcularMediaTurmas() {
     } else {
         printf("Nenhuma turma encontrada.\n");
     }
+}
+
+void verificarMatricula(char* matricula) {
+    FILE* arquivo = fopen("db/turma.bin", "rb");
+    
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+    
+    Turma turma;
+    
+    while (fread(&turma, sizeof(Turma), 1, arquivo)) {
+        char* token = strtok(turma.lista_alunos, ",");
+        
+        while (token != NULL) {
+            if (strcmp(token, matricula) == 0) {
+                printf("A matrícula '%s' está presente na turma '%s'.\n", matricula, turma.codigo);
+                fclose(arquivo);
+                return;
+            }
+            
+            token = strtok(NULL, ",");
+        }
+    }
+    
+    fclose(arquivo);
 }

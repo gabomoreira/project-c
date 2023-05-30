@@ -26,7 +26,6 @@ Turma *construir_turma();
 */
 Aluno *buscar_aluno();
 
-void remover_aluno();
 
 void imprimir_endereco(Endereco *endereco);
 
@@ -76,4 +75,6 @@ void imprimirTurma(const char* codigo);
 int printAllTeachesNoClass();
 void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor* professores, int numProfessores);
 void calcularMediaTurmas();
+
+void verificarMatricula(char* matricula) ;
 #endif
