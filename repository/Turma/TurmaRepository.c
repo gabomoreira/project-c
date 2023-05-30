@@ -321,32 +321,32 @@ void verificarMatricula(char* matricula) { // usando
     fclose(arquivo);
 }
 
-
 Turma* buscarTurmasRepository(int* numTurmas) {
-    FILE* arquivo = fopen(RELATIVE_PATH_DB, "rb");
-    if (!arquivo) {
-        perror("Erro ao abrir o arquivo de turmas.\n");
+    FILE* file = fopen("db/turma.bin", "rb");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
         return NULL;
     }
 
-    Turma* turmas = NULL;
-    Turma turma;
+    // Obter o número de registros no arquivo
+    fseek(file, 0, SEEK_END);
+    long fileSize = ftell(file);
+    rewind(file);
+    *numTurmas = fileSize / sizeof(Turma);
 
-    *numTurmas = 0;
-    while (fread(&turma, sizeof(Turma), 1, arquivo) == 1) {
-        turmas = realloc(turmas, (*numTurmas + 1) * sizeof(Turma));
-        if (!turmas) {
-            perror("Erro ao alocar memória para as turmas.\n");
-            fclose(arquivo);
-            return NULL;
-        }
-        turmas[*numTurmas] = turma;
-        (*numTurmas)++;
+    // Alocar memória para armazenar as turmas
+    Turma* turmas = (Turma*)malloc(*numTurmas * sizeof(Turma));
+    if (turmas == NULL) {
+        printf("Erro de memoria.\n");
+        fclose(file);
+        return NULL;
     }
 
-    fclose(arquivo);
+    // Ler os registros de turmas do arquivo
+    fread(turmas, sizeof(Turma), *numTurmas, file);
 
-    
+    fclose(file);
     return turmas;
 }
+
 
