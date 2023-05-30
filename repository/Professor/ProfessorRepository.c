@@ -172,54 +172,86 @@ void atualizarProfessorRepository(Professor *professor) {
 }
 
 // Função para remover um professor de um arquivo binário
-void excluirProfessorRepository(char *matricula) {
-    FILE *arquivo;
-    FILE *temporario;
-    Professor professor;
-    int encontrado = 0;
 
-  // Abre o arquivo binário para leitura
-    arquivo = fopen(RELATIVE_PATH_DB, "rb");
-    if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+void excluirProfessorRepository(char* matricula) {
+    FILE* fileTurmas = fopen("db/turma.bin", "rb+");
+    if (fileTurmas == NULL) {
+        printf("Erro ao abrir o arquivo de turmas.\n");
         return;
     }
 
-    // Abre um arquivo temporário para escrita
-    temporario = fopen("temp.bin", "wb");
-    if (temporario == NULL) {
-        printf("Erro ao abrir o arquivo temporário.\n");
-        fclose(arquivo);
-        return;
-    }
+    Turma turma;
 
-    // Lê cada registro do arquivo, excluindo o aluno com a matrícula correspondente
-    while (fread(&professor, sizeof(Professor), 1, arquivo) == 1) {
-        if (strcmp(professor.matricula, matricula) != 0) {
-            // Escreve o registro no arquivo temporário, exceto se for o professor a ser excluído
-            fwrite(&professor, sizeof(Professor), 1, temporario);
-        } else {
-            encontrado = 1;
+    // Percorre todas as turmas buscando a correspondência entre professor_turma e matricula
+    while (fread(&turma, sizeof(Turma), 1, fileTurmas) == 1) {
+        if (strcmp(turma.professor_turma, matricula) == 0) {
+            printf("A matrícula do professor está associada à turma %s. A exclusão não pode ser realizada.\n", turma.codigo);
+            fclose(fileTurmas);
+            return;
         }
     }
 
-    // Fecha os arquivos
-    fclose(arquivo);
-    fclose(temporario);
+    // Se a matrícula não está associada a nenhuma turma, inicia a exclusão do professor
+    FILE* fileProfessores = fopen(RELATIVE_PATH_DB, "rb");
+    if (fileProfessores == NULL) {
+        printf("Erro ao abrir o arquivo de professores.\n");
+        fclose(fileTurmas);
+        return;
+    }
 
-    // Remove o arquivo original
+    FILE* fileTemp = fopen("temp.bin", "wb");
+    if (fileTemp == NULL) {
+        printf("Erro ao abrir o arquivo temporário.\n");
+        fclose(fileProfessores);
+        fclose(fileTurmas);
+        return;
+    }
+
+    Professor professor;
+
+    // Copia todos os professores que não possuem a matrícula informada para o arquivo temporário
+    while (fread(&professor, sizeof(Professor), 1, fileProfessores) == 1) {
+        if (strcmp(professor.matricula, matricula) != 0) {
+            fwrite(&professor, sizeof(Professor), 1, fileTemp);
+        }
+    }
+
+    fclose(fileProfessores);
+    fclose(fileTemp);
+    fclose(fileTurmas);
+
+    // Remove o arquivo de professores original
     remove(RELATIVE_PATH_DB);
-
     // Renomeia o arquivo temporário para o nome original
     rename("temp.bin", RELATIVE_PATH_DB);
 
-    if (encontrado) {
-        printf("Professor excluído com sucesso!\n");
-    } else {
-        printf("Professor não encontrado!!\n");
+    printf("Professor excluído com sucesso.\n");
+}
+
+int verificarProfessorEmTurma(char* matricula) {
+    FILE* arquivo;
+    Turma turma;
+
+    // Abre o arquivo binário de turmas para leitura
+    arquivo = fopen('db/turma.bin', "rb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo de turmas.\n");
+        return 0;
     }
-    
- }
+
+    // Lê cada registro de turma do arquivo e verifica se a matrícula do professor está presente
+    while (fread(&turma, sizeof(Turma), 1, arquivo) == 1) {
+        if (strcmp(turma.professor_turma, matricula) == 0) {
+            fclose(arquivo);
+            return 1;
+        }
+    }
+
+    // Fecha o arquivo
+    fclose(arquivo);
+
+    return 0;
+}
 void listarNomesProfessores()
  {
     

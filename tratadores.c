@@ -243,22 +243,11 @@ void atualizar_professor_service(Professor *professor)
 
 void remover_professor_service() {
 
-    char matricula[50];
-    int professorExiste = 0;
-    printf("Matricula > ");
-    fgets(matricula, 49, stdin);
-    putchar('\n');
-    professorExiste = verificarProfessorTurma(matricula);
-    printf("%o\n", professorExiste);
-    if (professorExiste){
-        printf("Erro ao deletar professor\n");
-        printf("Professor esta relacionado a turma\n");
+    char matricula[10];
+    printf("Digite a matrícula do professor que deseja excluir: ");
+    scanf("%9s", matricula);
 
-    }else{
-        excluirProfessorRepository(matricula);
-    }
-
-    return;
+    return excluirProfessorRepository(matricula);
 }
 
 /*int printAllTeachesNoClass() {
@@ -643,3 +632,4 @@ int verificarCodigoTurma(const char* codigo) {
     fclose(arquivo);
     return 0; // Não há turma com o mesmo código
 }
+

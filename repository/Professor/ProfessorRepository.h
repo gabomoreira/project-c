@@ -21,5 +21,7 @@ void listarNomesProfessores();
 //função para buscar todos os professores
 Professor* buscarProfessoresRepository(int* numProfessores);
 
+int verificarProfessorEmTurma(char* matricula);
+
 
 
