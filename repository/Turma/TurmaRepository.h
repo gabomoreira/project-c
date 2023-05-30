@@ -22,4 +22,4 @@ int verificarCodigoTurma(const char* codigo);
 void imprimirTurma(const char* codigo);
 
 
-
+Turma* buscarTurmasRepository(int* numTurmas);

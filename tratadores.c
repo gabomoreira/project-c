@@ -199,15 +199,11 @@ void tratador_menu_estatistica()
 
     case 2:
     {
-       // printAllTeachesNoClass();
-        //return;
-        printf("entrou nessa poha 2 ");
+       printAllTeachesNoClass();
     }
     break;
     case 3:
     {
-        
-        printf("entrou nessa poha 3 ");
         calcularMediaTurmas();
     }
 
@@ -227,29 +223,29 @@ printf("entrou nessa poha 4");
 }
 
 
-// int printAllTeachesNoClass() {
-//     int numTurmas;
-//     Turma* turmas = buscarTurmasRepository(&numTurmas);
+int printAllTeachesNoClass() {
+    int numTurmas;
+    Turma* turmas = buscarTurmasRepository(&numTurmas);
 
-//     if (!turmas) {
-//         printf("Erro ao buscar as turmas.\n");
-//         return 1;
-//     }
+    if (!turmas) {
+        printf("Erro ao buscar as turmas.\n");
+        return 1;
+    }
 
-//     int numProfessores;
-//     Professor* professores = buscarProfessoresRepository(&numProfessores);
+    int numProfessores;
+    Professor* professores = buscarProfessoresRepository(&numProfessores);
 
-//     if (!professores) {
-//         printf("Erro ao buscar os professores.\n");
-//         free(turmas);
-//         return 1;
-//     }
+    if (!professores) {
+        printf("Erro ao buscar os professores.\n");
+        free(turmas);
+        return 1;
+    }
 
-//     imprimirProfessoresNaoRelacionados(turmas, numTurmas, professores, numProfessores);
+    imprimirProfessoresNaoRelacionados(turmas, numTurmas, professores, numProfessores);
 
-//     free(turmas);
-//     free(professores);
-// }
+    free(turmas);
+    free(professores);
+}
 
 
 
