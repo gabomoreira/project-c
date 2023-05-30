@@ -38,7 +38,7 @@ int obterQuantidadeAlunos()
 }
 
 // Função para adicionar um aluno a um arquivo binário existente
-void salvarAlunoBinario(Aluno* aluno) 
+void salvarAlunoBinario(Aluno* aluno) // usando
 {
     FILE *arquivo = fopen(RELATIVE_PATH_DB, "ab+");
 
@@ -79,7 +79,7 @@ void salvarAlunoBinario(Aluno* aluno)
 }
 
 // Função para resgatar um aluno de um arquivo binário a partir da matrícula
-Aluno *resgatarAluno(char *matricula)
+Aluno *resgatarAluno(char *matricula) //usando
 {
     FILE *arquivo = fopen(RELATIVE_PATH_DB, "rb"); // Nome do arquivo binário dos alunos
     if (!arquivo)
@@ -119,7 +119,7 @@ Aluno *resgatarAluno(char *matricula)
 
 
 // Função para atualizar um aluno de um arquivo binário
-void atualizarAluno(Aluno *aluno) {
+void atualizarAluno(Aluno *aluno) { // usando
     FILE *arquivo;
     FILE *temporario;
     Aluno alunoAtualizado;
@@ -170,7 +170,7 @@ void atualizarAluno(Aluno *aluno) {
 }
 
 // Função para remover um aluno de um arquivo binário
-void excluirAluno(const char *matricula)
+void excluirAluno(const char *matricula) // usando
 {
     FILE *arquivo;
     FILE *arquivoTemp;

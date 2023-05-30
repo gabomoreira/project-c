@@ -1,5 +1,4 @@
 #include "./ProfessorRepository.h"
-
 #include "../../dados.h"
 #include "../../constantes.h"
 #include <stdlib.h>
@@ -8,7 +7,6 @@
 
 // Declaração de uma constante para o caminho do db de aluno
 static const char* RELATIVE_PATH_DB = "db/professor.bin";
-static const char* RELATIVE_PATH_DB_ = "db/professor.bin";
 
 // Função para obter a quantidade de professores armazenados em um arquivo binário
 int obterQuantidadeProfessoresRepository()
@@ -172,7 +170,6 @@ void atualizarProfessorRepository(Professor *professor) {
 }
 
 // Função para remover um professor de um arquivo binário
-
 void excluirProfessorRepository(char* matricula) {
     FILE* fileTurmas = fopen("db/turma.bin", "rb+");
     if (fileTurmas == NULL) {
@@ -228,12 +225,13 @@ void excluirProfessorRepository(char* matricula) {
     printf("Professor excluído com sucesso.\n");
 }
 
+// Função que verifica se um professor esta associado a uma turma
 int verificarProfessorEmTurma(char* matricula) {
     FILE* arquivo;
     Turma turma;
 
     // Abre o arquivo binário de turmas para leitura
-    arquivo = fopen('db/turma.bin', "rb");
+    arquivo = fopen("db/turma.bin", "rb");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo de turmas.\n");
         return 0;
@@ -252,6 +250,8 @@ int verificarProfessorEmTurma(char* matricula) {
 
     return 0;
 }
+
+// Função para listar os nomes dos professores
 void listarNomesProfessores()
  {
     
@@ -290,7 +290,7 @@ void listarNomesProfessores()
     fclose(fp);
 }
 
-
+// Função buscar um professor
 Professor* buscarProfessoresRepository(int* numProfessores) {
     FILE* arquivo = fopen(RELATIVE_PATH_DB, "rb");
     if (!arquivo) {
