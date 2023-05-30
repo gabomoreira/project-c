@@ -99,12 +99,12 @@ void tratador_menu_professor()
         }
         else
         {
-            salvar_professor_service();
+            salvarProfessorRepository(construir_professor());
         }
         break;
     case 2:
     {   
-        Professor *professor = buscar_professor_service();
+        Professor *professor = resgatarProfessorRepository();
         if (professor == NULL)
         {
             printf("Professor não encontrado.\n");
@@ -117,13 +117,13 @@ void tratador_menu_professor()
     break;
     case 3:
     {
-        atualizar_professor_service(construir_professor());
+        atualizarProfessorRepository(construir_professor());
     }
 
     break;
     case 4:
     {
-        remover_professor_service();
+        excluirProfessorRepository();
     }
 
     break;
@@ -227,36 +227,6 @@ printf("entrou nessa poha 4");
 }
 
 
-// professor services
-
-void salvar_professor_service() {
-
-    return salvarProfessorRepository(construir_professor());
-}
-
-Professor *buscar_professor_service() {
-    char matricula[50];
-    printf("Matricula > ");
-    fgets(matricula, 49, stdin);
-    putchar('\n');
-
-    return resgatarProfessorRepository(matricula);
-}
-
-void atualizar_professor_service(Professor *professor)
-{
-    return atualizarProfessorRepository(professor);
-}
-
-void remover_professor_service() {
-
-    char matricula[10];
-    printf("Digite a matrícula do professor que deseja excluir: ");
-    scanf("%9s", matricula);
-
-    return excluirProfessorRepository(matricula);
-}
-
 // int printAllTeachesNoClass() {
 //     int numTurmas;
 //     Turma* turmas = buscarTurmasRepository(&numTurmas);
@@ -323,11 +293,11 @@ Aluno *construir_aluno()
     Aluno aluno;
 
     printf("Matricula\t> ");
-    fgets(aluno.matricula, 100, stdin);
+    fgets(aluno.matricula, 20, stdin);
     printf("CPF\t> ");
-    fgets(aluno.cpf, 100, stdin);
+    fgets(aluno.cpf, 20, stdin);
     printf("Nome\t> ");
-    fgets(aluno.nome, 100, stdin);
+    fgets(aluno.nome, 50, stdin);
     
     return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, construir_endereco());
 }
@@ -355,7 +325,7 @@ void atualizar_aluno(Aluno *aluno)
 
 
 
-// PARTE DE OUTPUT DO PROMPT OKAY
+// impressoes
 
 void imprimir_aluno(Aluno *aluno)
 {

@@ -79,8 +79,13 @@ void salvarProfessorRepository(Professor *professor)
 }
 
 // Função para resgatar um professor de um arquivo binário a partir da matrícula
-Professor *resgatarProfessorRepository(char *matricula)
+Professor *resgatarProfessorRepository()
 {
+    char matricula[50];
+    printf("Matricula > ");
+    fgets(matricula, 49, stdin);
+    putchar('\n');
+
     FILE *arquivo = fopen(RELATIVE_PATH_DB, "rb"); // Nome do arquivo binário dos alunos
     if (!arquivo)
     {
@@ -170,7 +175,11 @@ void atualizarProfessorRepository(Professor *professor) {
 }
 
 // Função para remover um professor de um arquivo binário
-void excluirProfessorRepository(char* matricula) {
+void excluirProfessorRepository() {
+    char matricula[10];
+    printf("Digite a matrícula do professor que deseja excluir: ");
+    scanf("%9s", matricula);
+
     FILE* fileTurmas = fopen("db/turma.bin", "rb+");
     if (fileTurmas == NULL) {
         printf("Erro ao abrir o arquivo de turmas.\n");
@@ -213,6 +222,8 @@ void excluirProfessorRepository(char* matricula) {
         }
     }
 
+    
+
     fclose(fileProfessores);
     fclose(fileTemp);
     fclose(fileTurmas);
@@ -223,6 +234,8 @@ void excluirProfessorRepository(char* matricula) {
     rename("temp.bin", RELATIVE_PATH_DB);
 
     printf("Professor excluído com sucesso.\n");
+
+    
 }
 
 // Função que verifica se um professor esta associado a uma turma

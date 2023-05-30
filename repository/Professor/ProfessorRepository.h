@@ -7,13 +7,13 @@ int obterQuantidadeProfessoresRepository();
 void salvarProfessorRepository(Professor *professor);
 
 // Função para obter a um orifessor em um arquivo binário
-Professor *resgatarProfessorRepository(char *matricula);
+Professor *resgatarProfessorRepository();
 
 // Função para atualizar um orifessor em um arquivo binário
 void atualizarProfessorRepository(Professor *professor);
 
 // Função para remover um orifessor em um arquivo binário
-void excluirProfessorRepository(char *matricula);
+void excluirProfessorRepository();
 
 //função para listar os nomes dos professores
 void listarNomesProfessores();

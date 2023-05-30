@@ -25,24 +25,9 @@ Turma *construir_turma();
     Busca um aluno
 */
 Aluno *buscar_aluno();
-
-
 void imprimir_endereco(Endereco *endereco);
-
 void cadastrarTurma();
 
-/**
- professor services
-*/
-
-void salvar_professor_service();
-Professor *buscar_professor_service();
-void atualizar_professor_service(Professor *professor);
-void remover_professor_service();
-
-/**
- turma services
-*/
 
 /*
     impressoes
