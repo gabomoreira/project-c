@@ -1,6 +1,6 @@
 Rode o seguinte comando para rodar o código:
 
 
-gcc dados.c main.c menus.c tratadores.c ./repository/Aluno/AlunoRepository.c ./repository/Professor/ProfessorRepository.c -o c 
+gcc dados.c main.c menus.c tratadores.c ./repository/Aluno/AlunoRepository.c ./repository/Professor/ProfessorRepository.c ./repository/Turma/TurmaRepository.c -o c 
 
 ./c
