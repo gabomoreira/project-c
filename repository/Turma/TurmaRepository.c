@@ -259,3 +259,26 @@ int verificarProfessorTurma(char *matricula) {
 
     return encontrado;
 }
+// Função para calcular a média das notas presentes na lista de alunos da turma
+ float lerMediaTurma(const char*  RELATIVE_PATH_DB ) {
+    FILE* arquivo = fopen( RELATIVE_PATH_DB , "rb"); // Abrir o arquivo binário em modo de leitura binária
+
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 0.0;
+    }
+
+    Turma turma;
+
+    // Ler a estrutura Turma diretamente do arquivo binário
+    fread(&turma, sizeof(Turma), 1, arquivo);
+
+    // Acessar a média da turma
+    float media = turma.media_turma;
+
+    printf("Média da turma: %.2f\n", media);
+
+    fclose(arquivo); // Fechar o arquivo
+
+    return media;
+}
