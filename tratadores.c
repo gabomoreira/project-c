@@ -195,20 +195,21 @@ void tratador_menu_estatistica()
     {
        // printAllTeachesNoClass();
         //return;
-
+        printf("entrou nessa poha 2 ");
     }
     break;
     case 3:
     {
         
-        float lerMediaTurma();
+        printf("entrou nessa poha 3 ");
+        calcularMediaTurmas();
     }
 
     break;
     case 4:
     {
          // funcao para o case 4
-
+printf("entrou nessa poha 4");
         // remover_aluno();
     }
 
@@ -633,3 +634,35 @@ int verificarCodigoTurma(const char* codigo) {
     return 0; // Não há turma com o mesmo código
 }
 
+
+void calcularMediaTurmas() {
+    FILE* file = fopen("db/turma.bin", "rb");
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    Turma turma;
+    int count = 0;
+    float soma = 0.0;
+
+    while (fread(&turma, sizeof(Turma), 1, file) == 1) {
+        printf("Código: %s\n", turma.codigo);
+        printf("Disciplina: %s\n", turma.disciplina);
+        printf("Professor: %s\n", turma.professor_turma);
+        printf("Lista de alunos: %s\n", turma.lista_alunos);
+        printf("Média da turma: %.2f\n\n", turma.media_turma);
+
+        soma += turma.media_turma;
+        count++;
+    }
+
+    fclose(file);
+
+    if (count > 0) {
+        float mediaTotal = soma / count;
+        printf("Média total das turmas: %.2f\n", mediaTotal);
+    } else {
+        printf("Nenhuma turma encontrada.\n");
+    }
+}
