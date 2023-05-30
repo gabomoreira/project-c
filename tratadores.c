@@ -193,8 +193,8 @@ void tratador_menu_estatistica()
 
     case 2:
     {
-        printAllTeachesNoClass();
-        return;
+       // printAllTeachesNoClass();
+        //return;
 
     }
     break;
@@ -261,7 +261,7 @@ void remover_professor_service() {
     return;
 }
 
-int printAllTeachesNoClass() {
+/*int printAllTeachesNoClass() {
     int numTurmas;
     Turma* turmas = buscarTurmasRepository(&numTurmas);
 
@@ -283,7 +283,7 @@ int printAllTeachesNoClass() {
 
     free(turmas);
     free(professores);
-}
+}*/
 
 
 
@@ -442,10 +442,18 @@ void exibirTurmas() {
     }
 
     Turma turma;
+    char codigoBuscado[50];
+    
+    // Pedir ao usuário o código a ser buscado
+    printf("Digite o código da turma a ser buscada: ");
+    scanf("%s", codigoBuscado);
 
     // Leia cada turma do arquivo e exiba suas informações
     while (fread(&turma, sizeof(Turma), 1, arquivo) == 1) {
-        exibirTurma(&turma);
+        if (strcmp(turma.codigo, codigoBuscado) == 0) {
+            exibirTurma(&turma);
+            break;
+        }
     }
 
     fclose(arquivo);
