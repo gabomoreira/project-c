@@ -75,5 +75,5 @@ void imprimirTurma(const char* codigo);
 
 int printAllTeachesNoClass();
 void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor* professores, int numProfessores);
-
+float lerMediaTurma();
 #endif

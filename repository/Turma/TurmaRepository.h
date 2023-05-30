@@ -21,3 +21,7 @@ Turma* buscarTurmasRepository(int* numTurmas);
 // Função que retorna se o professor está relacionado a uma turma
 int verificarProfessorTurma(char *matricula);
 
+//Função que retornar a média
+float lerMediaTurma(const char*  RELATIVE_PATH_DB );
+
+
