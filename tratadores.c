@@ -202,8 +202,6 @@ void tratador_menu_estatistica()
     {
         
         float lerMediaTurma();
-        return;
-        // atualizarAluno(construir_aluno());
     }
 
     break;
@@ -592,10 +590,6 @@ void cadastrarTurma() {
     printf("Digite o professor da turma: ");
     fgets(turma.professor_turma, sizeof(turma.professor_turma), stdin);
     turma.professor_turma[strcspn(turma.professor_turma, "\n")] = '\0';
-
-    printf("Digite a média da turma: ");
-    fscan("%f", &turma.media_turma);
-    getchar(); // Limpar o buffer do enter
 
     printf("Digite a lista de alunos (separados por vírgula): ");
     fgets(turma.lista_alunos, sizeof(turma.lista_alunos), stdin);
