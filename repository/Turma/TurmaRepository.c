@@ -1,3 +1,4 @@
+//  Inclusão dos arquivos de cabeçalho e das bibliotecas necessárias para o código 
 #include "./TurmaRepository.h"
 #include "../../dados.h"
 #include "../../constantes.h"
@@ -5,13 +6,12 @@
 #include <stdio.h>
 #include <string.h>
 
-// Declaração de uma constante para o caminho do db de turma
+// Declaração de uma constante para o caminho do banco de dados de turma
 static const char* RELATIVE_PATH_DB = "db/turma.bin";
-
 
 // Função para obter a quantidade de turmas armazenados em um arquivo binário
 int obterQuantidadeTurmasRepository()
-{
+{   // Abre o arquivo no modo de leitura binária
     FILE *arquivo = fopen(RELATIVE_PATH_DB, "rb");
     if (arquivo)
     {
@@ -26,15 +26,17 @@ int obterQuantidadeTurmasRepository()
 
         // Calcular a quantidade de registros de turmas
         int quantidadeTurmas = tamanhoArquivo / tamanhoRegistro;
-
+        
+        // Fecha o arquivo 
         fclose(arquivo);
 
+        // Retorna a quantidade de turmas
         return quantidadeTurmas;
     }
     else
     {
-        perror("Erro ao abrir o arquivo.\n");
-        return -1; // Valor de erro, se necessário
+        perror("Erro ao abrir o arquivo.\n"); // Imprime uma mensagem de erro
+        return -1; // Valor de erro, se o arquivo não puder ser aberto
     }
 }
 
@@ -53,11 +55,13 @@ void exibirTurma(const Turma* turma) {
 void exibirTurmas() {
     // Abra o arquivo no modo de leitura binária
     FILE* arquivo = fopen("db/turma.bin", "rb");
+    // Imprimir mensagem de erro caso não haja arquivo 
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
-
+    
+    // Declaração de variáveis
     Turma turma;
     char codigoBuscado[50];
     
@@ -72,25 +76,33 @@ void exibirTurmas() {
             break;
         }
     }
-
+    // Fechar o arquivo
     fclose(arquivo);
 }
 
 // Função para atualizar as informações de uma turma
 void atualizarTurma() {
+    // Declaração da variável codigo
     char codigo[50];
-
+    
+    // Exibir mensagem na tela 
     printf("Digite o código da turma que deseja atualizar: ");
+    
+    // Ler uma linha de texto e armazena na variávle código 
     fgets(codigo, sizeof(codigo), stdin);
     codigo[strcspn(codigo, "\n")] = '\0';
 
     // Abra o arquivo no modo de leitura e escrita binária
     FILE* arquivo = fopen("db/turma.bin", "r+b");
+    
+    // Imprimir mensagem de erro caso não haja arquivo 
+
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
-
+    
+    // Declaração de variável 
     Turma turma;
 
     // Pesquise pela turma com o código informado
@@ -127,28 +139,34 @@ void atualizarTurma() {
             break;
         }
     }
-
+    // Fecha o arquivo 
     fclose(arquivo);
 }
 
 // Função para excluir uma turma
 void excluirTurma() {
+    // Declara a variável código
     char codigo[50];
-
+    
+    // Solicite ao usuário o código da turma que ele deseja excluir
     printf("Digite o código da turma que deseja excluir: ");
     fgets(codigo, sizeof(codigo), stdin);
     codigo[strcspn(codigo, "\n")] = '\0';
 
-    // Abra o arquivo no modo de leitura e escrita binária
+    // Abre o arquivo no modo de leitura e escrita binária
     FILE* arquivo = fopen("db/turma.bin", "r+b");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
-
+    
+    // Declaração de variável
     Turma turma;
 
+    //Criação de arquivo binário temporário de escrita 
     FILE* arquivoTemp = fopen("temp.bin", "wb");
+    
+    // Imprime mensagem caso haja erro na criação do arquivo
     if (arquivoTemp == NULL) {
         printf("Erro ao criar arquivo temporário.\n");
         fclose(arquivo);
@@ -162,6 +180,7 @@ void excluirTurma() {
         }
     }
 
+    // Fecha os arquivos 
     fclose(arquivo);
     fclose(arquivoTemp);
 
@@ -174,6 +193,8 @@ void excluirTurma() {
     printf("Turma excluída com sucesso.\n");
 }
 
+//Criação da função para imprimir turmas 
+
 void imprimirTurma(const char* codigo) {
     // Abra o arquivo no modo de leitura binária
     FILE* arquivo = fopen("db/turma.bin", "rb");
@@ -182,22 +203,25 @@ void imprimirTurma(const char* codigo) {
         return;
     }
 
+    // Declaração de variável
     Turma turma;
 
-    // Pesquise pela turma com o código informado
+    // Loop de pesquisa pela turma com o código informado
     while (fread(&turma, sizeof(Turma), 1, arquivo) == 1) {
         if (strcmp(turma.codigo, codigo) == 0) {
             exibirTurma(&turma);
             break;
         }
     }
-
+    // Fecha o arquivo 
     fclose(arquivo);
 }
-
+// Função para cadastrar turma 
 void cadastrarTurma() {
+    // Declaração de turma
     Turma turma;
-
+    
+    // Armazena o código da turma digitado pelo usuário 
     printf("Digite o código da turma: ");
     fgets(turma.codigo, sizeof(turma.codigo), stdin);
     turma.codigo[strcspn(turma.codigo, "\n")] = '\0';
@@ -208,6 +232,7 @@ void cadastrarTurma() {
         return;
     }
 
+    // Leitura de dados digitados pelo usuário
     printf("Digite a disciplina: ");
     fgets(turma.disciplina, sizeof(turma.disciplina), stdin);
     turma.disciplina[strcspn(turma.disciplina, "\n")] = '\0';
@@ -222,9 +247,9 @@ void cadastrarTurma() {
 
     printf("Digite a média da turma: ");
     scanf("%f", &turma.media_turma);
-    getchar(); // Limpar o buffer do enter
+    getchar(); // Limpa o buffer do enter
 
-    // Abra o arquivo no modo de escrita binária
+    // Abre o arquivo no modo de escrita binária
     FILE* arquivo = fopen("db/turma.bin", "ab");
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
@@ -233,9 +258,11 @@ void cadastrarTurma() {
 
     // Escreva a turma no arquivo
     fwrite(&turma, sizeof(Turma), 1, arquivo);
-
+    
+    // Fecha o arquivo 
     fclose(arquivo);
-
+    
+    // Imprime mensagem de sucesso 
     printf("Turma cadastrada com sucesso.\n");
 }
 
@@ -246,7 +273,7 @@ int verificarCodigoTurma(const char* codigo) {
         printf("Erro ao abrir o arquivo.\n");
         return 0;
     }
-
+    // Declaração de turma
     Turma turma;
 
     // Verifique se há uma turma com o mesmo código
@@ -256,36 +283,45 @@ int verificarCodigoTurma(const char* codigo) {
             return 1; // Já existe uma turma com o mesmo código
         }
     }
-
+    // Fecha o arquivo
     fclose(arquivo);
-    return 0; // Não há turma com o mesmo código
+
+    return 0; // Retorna 0 caso não há turma com o mesmo código
 }
 
+// Função para o cálculo de média 
 
 void calcularMediaTurmas() {
+
+    // Leitura do arquivo binário referente a turma
     FILE* file = fopen("db/turma.bin", "rb");
+    //  Imprime mensagem caso haja erro ao abrir o arquivo
     if (file == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
-
+    // Declaração de variavéis 
     Turma turma;
     int count = 0;
     float soma = 0.0;
 
+    // Lê e exibe as informações de todas as turmas presentes no arquivo 
     while (fread(&turma, sizeof(Turma), 1, file) == 1) {
         printf("Código: %s\n", turma.codigo);
         printf("Disciplina: %s\n", turma.disciplina);
         printf("Professor: %s\n", turma.professor_turma);
         printf("Lista de alunos: %s\n", turma.lista_alunos);
         printf("Média da turma: %.2f\n\n", turma.media_turma);
-
+        
+        // Calcula a soma das médias
         soma += turma.media_turma;
+        // Atualiza contador
         count++;
     }
-
+    // Fecha o arquivo 
     fclose(file);
-
+    
+    // Calcula e printa a média das turmas
     if (count > 0) {
         float mediaTotal = soma / count;
         printf("Média total das turmas: %.2f\n", mediaTotal);
@@ -294,16 +330,19 @@ void calcularMediaTurmas() {
     }
 }
 
-void verificarMatricula(char* matricula) { // usando
+// Função que verifica se uma determinada matrícula está presente em alguma turma do arquivo binário 
+void verificarMatricula(char* matricula) {
     FILE* arquivo = fopen("db/turma.bin", "rb");
-    
+    // Imprime na tela erro caso não consiga abrir o arquivo
     if (arquivo == NULL) {
         printf("Erro ao abrir o arquivo.\n");
         return;
     }
-    
+
+    // Declaração de turma
     Turma turma;
-    
+
+    // Percorre cada registro de turma no arquivo e verifica se uma determinada matrícula está presente na lista de alunos da turma
     while (fread(&turma, sizeof(Turma), 1, arquivo)) {
         char* token = strtok(turma.lista_alunos, ",");
         
@@ -317,10 +356,11 @@ void verificarMatricula(char* matricula) { // usando
             token = strtok(NULL, ",");
         }
     }
-    
+    // Fecha o arquivo 
     fclose(arquivo);
 }
 
+// Busca turmas armazenadas em um arquivo binário e as retorna como um array de estruturas Turma
 Turma* buscarTurmasRepository(int* numTurmas) {
     FILE* file = fopen("db/turma.bin", "rb");
     if (file == NULL) {
@@ -345,7 +385,10 @@ Turma* buscarTurmasRepository(int* numTurmas) {
     // Ler os registros de turmas do arquivo
     fread(turmas, sizeof(Turma), *numTurmas, file);
 
+    // Fecha o arquivo 
     fclose(file);
+
+    // Retorna turmas
     return turmas;
 }
 

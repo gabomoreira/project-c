@@ -1,3 +1,4 @@
+// Inclui o arquivo de cabeçalho "dados.h" 
 #include "../../dados.h"
 
 // Função para obter a quantidade de alunos armazenados em um arquivo binário
