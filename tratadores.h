@@ -6,7 +6,7 @@
 /*
  tratadores
 */
-
+// Declaração das fucções relacionadas a tratadores que provavelmente
 void tratador_menu_aluno();
 void tratador_menu_turma();
 void tratador_menu_professor();
