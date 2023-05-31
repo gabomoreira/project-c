@@ -1,3 +1,4 @@
+/*Inclui arquivos de cabeçalho necessários para a compilação do programa*/
 #include "tratadores.h"
 #include "./repository/Aluno/AlunoRepository.h"
 #include "./repository/Professor/ProfessorRepository.h"
@@ -185,36 +186,35 @@ void tratador_menu_turma()
     }
 }
 
+// Função que lida com o menu estatística 
 void tratador_menu_estatistica()
-{
+
+{   // Criação do menu de estatística 
     int opcao = menu_crud_estatistica();
 
+    // Estrutura switch para menu Estatística
     switch (opcao)
     {
     case 1:
-    {
+    {   // Chamada da função para listar nomes de professores
         listarNomesProfessores();
     }
     break;
 
     case 2:
-    {
+    {   //  Chamada da função para listar professores sem turma
        printAllTeachesNoClass();
     }
     break;
     case 3:
-    {
+    {   // Cálculo da média das turmas
         calcularMediaTurmas();
     }
-
     break;
     case 4:
     {
-         // funcao para o case 4
-printf("entrou nessa poha 4");
-        // remover_aluno();
-    }
 
+    }
     break;
     default:
         printf("Retornando ao menu principal\n");
@@ -222,7 +222,7 @@ printf("entrou nessa poha 4");
     }
 }
 
-
+//  Função que imprime os professores não vinculados a nenhuma turma
 int printAllTeachesNoClass() {
     int numTurmas;
     Turma* turmas = buscarTurmasRepository(&numTurmas);
@@ -247,10 +247,7 @@ int printAllTeachesNoClass() {
     free(professores);
 }
 
-
-
-
-// constructors
+// Função para construir professor 
 
 Professor *construir_professor()
 {
@@ -266,6 +263,7 @@ Professor *construir_professor()
     return criarProfessor(professor.matricula, professor.cpf, professor.nome, construir_endereco());
 }
 
+// Função para construir endereço
 Endereco *construir_endereco()
 {
     Endereco endereco;
@@ -284,6 +282,7 @@ Endereco *construir_endereco()
     return criarEndereco(endereco.logradouro, endereco.bairro, endereco.cidade, endereco.estado, endereco.numero);
 }
 
+// Função para construir aluno
 Aluno *construir_aluno()
 {
     Aluno aluno;
@@ -298,7 +297,8 @@ Aluno *construir_aluno()
     return criarAluno(aluno.matricula, aluno.cpf, aluno.nome, construir_endereco());
 }
 
-Aluno *buscar_aluno() // usando
+// Função para buscar aluno 
+Aluno *buscar_aluno() 
 {
     char matricula[50];
     printf("Matricula > ");
@@ -308,6 +308,7 @@ Aluno *buscar_aluno() // usando
     return resgatarAluno(matricula);
 }
 
+// Função para atualizar aluno 
 void atualizar_aluno(Aluno *aluno)
 {
     char matricula[50];
@@ -319,10 +320,7 @@ void atualizar_aluno(Aluno *aluno)
 }
 
 
-
-
-// impressoes
-
+// Funções de impressão  de aluno
 void imprimir_aluno(Aluno *aluno)
 {
     printf("Matricula: %s", aluno->matricula);
@@ -336,6 +334,7 @@ void imprimir_aluno(Aluno *aluno)
            aluno->endereco->numero);
 }
 
+// Funções de impressão  de professor
 void imprimir_professor(Professor *professor)
 {
     printf("Matricula: %s", professor->matricula);
@@ -349,11 +348,12 @@ void imprimir_professor(Professor *professor)
            professor->endereco->numero);
 }
 
+// Funções de impressão  de endereço
 void imprimir_endereco(Endereco *endereco)
 {
-    
-}
+    }
 
+// Funções de impressão  não relacionados a nenhuma turma
 void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor* professores, int numProfessores) {
     int i, j;
     int professorRelacionado;
