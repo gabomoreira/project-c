@@ -210,7 +210,7 @@ void tratador_menu_estatistica()
     break;
     case 4:
     {
-         // funcao para o case 4
+        // funcao para o case 4
 printf("entrou nessa poha 4");
         // remover_aluno();
     }
@@ -325,9 +325,16 @@ void atualizar_aluno(Aluno *aluno)
 
 void imprimir_aluno(Aluno *aluno)
 {
+     // Imprime a matrícula do aluno
     printf("Matricula: %s", aluno->matricula);
+
+     // Imprime o CPF do aluno
     printf("CPF: %s", aluno->cpf);
+
+     // Imprime o nome do aluno
     printf("Nome: %s", aluno->nome);
+
+     // Imprime o endereço completo do aluno
     printf("Endereco: %s, %s, %s, %s, %s\n",
            aluno->endereco->logradouro,
            aluno->endereco->bairro,
@@ -338,8 +345,13 @@ void imprimir_aluno(Aluno *aluno)
 
 void imprimir_professor(Professor *professor)
 {
+      // Imprime a matrícula do professor
     printf("Matricula: %s", professor->matricula);
+
+     // Imprime o CPF do professor
     printf("CPF: %s", professor->cpf);
+
+     // Imprime o endereço completo do professor
     printf("Nome: %s", professor->nome);
     printf("Endereco: %s, %s, %s, %s, %s\n",
            professor->endereco->logradouro,
@@ -359,14 +371,20 @@ void imprimirProfessoresNaoRelacionados(Turma* turmas, int numTurmas, Professor*
     int professorRelacionado;
 
     printf("Professores nao relacionados a nenhuma turma:\n");
+
+    // Loop para percorrer todos os professores
     for (i = 0; i < numProfessores; i++) {
-        professorRelacionado = 0;
+        professorRelacionado = 0; // Inicializa a variável como não relacionada
+        
+        // Loop para percorrer todas as turmas
         for (j = 0; j < numTurmas; j++) {
+            // Verifica se a matrícula do professor coincide com a matrícula do professor da turma atual
             if (strcmp(professores[i].matricula, turmas[j].professor_turma) == 0) {
-                professorRelacionado = 1;
-                break;
+                professorRelacionado = 1; // O professor está relacionado a pelo menos uma turma
+                break; // Sai do loop interno, pois não é necessário verificar outras turmas
             }
         }
+         // Se o professor não estiver relacionado a nenhuma turma, imprime sua matrícula
         if (!professorRelacionado) {
             printf("Matricula: %s", professores[i].matricula);
         }
