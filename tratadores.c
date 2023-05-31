@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// funcionando aparentemente
+
 void tratador_menu_aluno()
 {
     int opcao = menu_crud_aluno();
@@ -75,7 +75,7 @@ void tratador_menu_aluno()
     }
 }
 
-// ja implementado
+
 void tratador_menu_professor()
 {
     int opcao = menu_crud_professor();
@@ -133,12 +133,12 @@ void tratador_menu_professor()
     }
 }
 
-void tratador_menu_turma()
+void tratador_menu_turma() // opções do menu relacionadas a turma
 {
-    int opcao = menu_crud_turma();
-    Turma *turma = NULL;
+    int opcao = menu_crud_turma(); // exibe um menu específico para as operações de criação, leitura, atualização e exclusão de turmas
+    Turma *turma = NULL;//inicializa um ponteiro turma para NULL
     
-    int quantidadeTurmas = obterQuantidadeTurmasRepository();
+    int quantidadeTurmas = obterQuantidadeTurmasRepository(); //essa linha chama a função obterQuantidadeTurmasRepository
 
     if (quantidadeTurmas != -1)
     {
@@ -152,7 +152,7 @@ void tratador_menu_turma()
     case 1:
         // funcao para o case 1
 
-        if (quantidadeTurmas >= MAX_TURMA)
+        if (quantidadeTurmas >= MAX_TURMA) //verificado se a quantidade de turmas atingiu o limite maximo 
         {
              printf("Número máximo de turmas atingido\n");
          }
@@ -163,11 +163,11 @@ void tratador_menu_turma()
          break;
     case 2:
     {
-       exibirTurmas();
+       exibirTurmas(); //chamada para mostrar as turmas existentes.
 
     }
     break;
-    case 3:
+    case 3: //chamada para permitir a atualizacao de uma turma existente.
     {
         atualizarTurma();
     }
@@ -175,11 +175,11 @@ void tratador_menu_turma()
     break;
     case 4:
     {
-        excluirTurma();
+        excluirTurma(); // chamada para permitir a exclusao de uma turma existente.
     }
 
     break;
-    default:
+    default: //exibida uma mensagem informando que o usuario esta retornando ao menu principal.
         printf("Retornando ao menu principal\n");
         break;
     }
